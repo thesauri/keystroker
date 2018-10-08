@@ -1,9 +1,9 @@
 import { action, computed, observable } from "mobx";
-import RegistrationDialog from "../RegistrationDialog";
+import EmailDialog from "../EmailDialog";
 
 class RegistrationState {
     @observable private selectedDialogIndex: number = 0;
-    private dialogs: Array<() => JSX.Element> = [RegistrationDialog];
+    private dialogs: Array<() => JSX.Element> = [EmailDialog];
 
     @computed
     get CurrentDialog(): () => JSX.Element {

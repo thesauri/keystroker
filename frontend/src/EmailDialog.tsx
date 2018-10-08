@@ -2,7 +2,7 @@ import * as React from 'react';
 import Dialog from "./Dialog";
 import RegistrationState from "./state/RegistrationState";
 
-const RegistrationDialog = () => (
+const EmailDialog = () => (
     <Dialog
         title="Registration"
         next={{
@@ -23,4 +23,4 @@ const RegistrationDialog = () => (
     </Dialog>
 );
 
-export default RegistrationDialog;
+export default EmailDialog;
