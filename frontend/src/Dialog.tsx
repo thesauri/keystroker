@@ -28,7 +28,7 @@ const Dialog = ({ title, children, back, next, notification }: Props) => (
         <section className="section">
             <div className="container">
                 { notification &&
-                    <div className="notification">
+                    <div className="notification is-danger">
                         {notification}
                     </div>
                 }
