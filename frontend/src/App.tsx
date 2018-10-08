@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-
+import RegistrationDialog from './RegistrationDialog';
 
 class App extends React.Component {
   public render() {
@@ -13,28 +13,7 @@ class App extends React.Component {
             </h1>
           </div>
         </nav>
-        <div className="section">
-          <div className="tile is-ancestor">
-            <div className="tile is-parent">
-              <div className="tile is-child notification is-primary">
-                <p className="title">
-                  Registration
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-                <div className="field">
-                  <label className="label has-text-white">
-                    Email
-                  </label>
-                  <div className="control">
-                    <input className="input" type="email" placeholder="username@aalto.fi" autoFocus={true} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <RegistrationDialog />
         <footer className="App-footer navbar is-fixed-bottom">
           <button className="button has-background-dark is-link">
             Back
