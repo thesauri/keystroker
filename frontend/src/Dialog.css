@@ -1,0 +1,8 @@
+footer.Dialog-footer {
+  display: flex;
+}
+
+button.Dialog-button.button {
+  flex: 1;
+  border-radius: 0;
+}

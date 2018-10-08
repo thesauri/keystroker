@@ -1,4 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
+import "./Dialog.css";
 
 export interface Props {
     title: string;
@@ -19,13 +20,13 @@ const Dialog = ({ title, children, backText, nextText }: Props) => (
                 </div>
             </div>
         </div>
-        <footer className="App-footer navbar is-fixed-bottom">
+        <footer className="Dialog-footer navbar is-fixed-bottom">
             { backText &&
-                <button className="button has-background-dark is-link">
+                <button className="button Dialog-button has-background-dark is-link">
                     {backText}
                 </button>
             }
-            <button className="button has-background-primary is-link">
+            <button className="button Dialog-button has-background-primary is-link">
                 {nextText}
             </button>
         </footer>
