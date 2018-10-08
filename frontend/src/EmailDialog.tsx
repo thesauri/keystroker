@@ -1,12 +1,25 @@
-import * as React from 'react';
+import * as React from "react";
+import { observer } from "mobx-react"
 import Dialog from "./Dialog";
+import Email from "./state/Email";
 import RegistrationState from "./state/RegistrationState";
 
-const EmailDialog = () => (
+const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+    Email.update(event.currentTarget.value);
+}
+
+const onNext = () => {
+    if (Email.validate()) {
+        RegistrationState.next();
+    }
+}
+
+const EmailDialog = observer(() => (
     <Dialog
         title="Registration"
+        notification={Email.notification}
         next={{
-            onClick: RegistrationState.next,
+            onClick: onNext,
             text: "Next"
         }}>
         <p>
@@ -17,10 +30,16 @@ const EmailDialog = () => (
                 Email
             </label>
             <div className="control">
-                <input className="input" type="email" placeholder="username@aalto.fi" autoFocus={true} />
+                <input
+                    onChange={onEmailChange}
+                    value={Email.email}
+                    className="input"
+                    type="email"
+                    placeholder="username@aalto.fi"
+                    autoFocus={true} />
             </div>
         </div>
     </Dialog>
-);
+));
 
 export default EmailDialog;

@@ -11,9 +11,10 @@ export interface Props {
     children: React.ReactNode;
     back?: ButtonProps;
     next: ButtonProps;
+    notification?: string;
 }
 
-const Dialog = ({ title, children, back, next }: Props) => (
+const Dialog = ({ title, children, back, next, notification }: Props) => (
     <div className="section">
         <div className="tile is-ancestor">
             <div className="tile is-parent">
@@ -21,6 +22,11 @@ const Dialog = ({ title, children, back, next }: Props) => (
                 <p className="title">
                     {title}
                 </p>
+                { notification &&
+                    <div className="notification">
+                        {notification}
+                    </div>
+                }
                 {children}
                 </div>
             </div>
