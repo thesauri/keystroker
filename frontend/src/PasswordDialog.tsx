@@ -34,7 +34,7 @@ const PasswordDialog = observer(() => (
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
         <div className="field">
-            <label className="label has-text-white">
+            <label className="label">
                 Password
             </label>
             <div className="control">
@@ -47,7 +47,7 @@ const PasswordDialog = observer(() => (
             </div>
         </div>
         <div className="field">
-            <label className="label has-text-white">
+            <label className="label">
                 Confirm password
             </label>
             <div className="control">

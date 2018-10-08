@@ -15,36 +15,40 @@ export interface Props {
 }
 
 const Dialog = ({ title, children, back, next, notification }: Props) => (
-    <div className="section">
-        <div className="tile is-ancestor">
-            <div className="tile is-parent">
-                <div className="tile is-child notification is-primary">
-                <p className="title">
-                    {title}
-                </p>
+    <div>
+        <section className="hero is-primary">
+            <div className="hero-body">
+                <div className="container">
+                    <h1 className="title">
+                        {title}
+                    </h1>
+                </div>
+            </div>
+        </section>
+        <section className="section">
+            <div className="container">
                 { notification &&
                     <div className="notification">
                         {notification}
                     </div>
                 }
                 {children}
-                </div>
+                <footer className="Dialog-footer navbar is-fixed-bottom">
+                    { back &&
+                        <button
+                            className="button Dialog-button has-background-dark is-link"
+                            onClick={back.onClick}>
+                            {back.text}
+                        </button>
+                    }
+                    <button
+                        className="button Dialog-button has-background-primary is-link"
+                        onClick={next.onClick}>
+                            {next.text}
+                    </button>
+                </footer>
             </div>
-        </div>
-        <footer className="Dialog-footer navbar is-fixed-bottom">
-            { back &&
-                <button
-                    className="button Dialog-button has-background-dark is-link"
-                    onClick={back.onClick}>
-                    {back.text}
-                </button>
-            }
-            <button
-                className="button Dialog-button has-background-primary is-link"
-                onClick={next.onClick}>
-                    {next.text}
-                </button>
-            </footer>
+        </section>
     </div>
 );
 

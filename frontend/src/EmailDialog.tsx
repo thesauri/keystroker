@@ -26,7 +26,7 @@ const EmailDialog = observer(() => (
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
         <div className="field">
-            <label className="label has-text-white">
+            <label className="label">
                 Email
             </label>
             <div className="control">
