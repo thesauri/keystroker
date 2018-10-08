@@ -1,16 +1,33 @@
 import * as React from 'react';
+import { observer } from "mobx-react";
 import Dialog from "./Dialog";
+import Password from "./state/Password";
 import RegistrationState from "./state/RegistrationState";
 
-const PasswordDialog = () => (
+const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+    Password.updatePassword(event.currentTarget.value);
+};
+
+const onConfirmPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+    Password.updateConfirmPassword(event.currentTarget.value);
+};
+
+const onNext = () => {
+    if (Password.validate()) {
+        RegistrationState.next();
+    }
+};
+
+const PasswordDialog = observer(() => (
     <Dialog
         title="Password"
+        notification={Password.notification}
         back={{
             onClick: RegistrationState.back,
             text: "Back"
         }}
         next={{
-            onClick: RegistrationState.next,
+            onClick: onNext,
             text: "Next"
         }}>
         <p>
@@ -21,7 +38,12 @@ const PasswordDialog = () => (
                 Password
             </label>
             <div className="control">
-                <input className="input" type="password" autoFocus={true} />
+                <input
+                    onChange={onPasswordChange}
+                    value={Password.password}
+                    className="input"
+                    type="password"
+                    autoFocus={true} />
             </div>
         </div>
         <div className="field">
@@ -29,10 +51,14 @@ const PasswordDialog = () => (
                 Confirm password
             </label>
             <div className="control">
-                <input className="input" type="password" />
+                <input
+                    onChange={onConfirmPasswordChange}
+                    value={Password.confirmPassword}
+                    className="input"
+                    type="password" />
             </div>
         </div>
     </Dialog>
-);
+));
 
 export default PasswordDialog;
