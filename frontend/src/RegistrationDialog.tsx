@@ -1,10 +1,14 @@
 import * as React from 'react';
 import Dialog from "./Dialog";
+import RegistrationState from "./state/RegistrationState";
 
 const RegistrationDialog = () => (
     <Dialog
         title="Registration"
-        nextText="Next">
+        next={{
+            onClick: RegistrationState.next,
+            text: "Next"
+        }}>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>

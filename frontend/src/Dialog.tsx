@@ -1,14 +1,19 @@
 import * as React from "react";
 import "./Dialog.css";
 
+interface ButtonProps {
+    text: string;
+    onClick: () => any;
+}
+
 export interface Props {
     title: string;
     children: React.ReactNode;
-    backText?: string;
-    nextText: string;
+    back?: ButtonProps;
+    next: ButtonProps;
 }
 
-const Dialog = ({ title, children, backText, nextText }: Props) => (
+const Dialog = ({ title, children, back, next }: Props) => (
     <div className="section">
         <div className="tile is-ancestor">
             <div className="tile is-parent">
@@ -21,15 +26,19 @@ const Dialog = ({ title, children, backText, nextText }: Props) => (
             </div>
         </div>
         <footer className="Dialog-footer navbar is-fixed-bottom">
-            { backText &&
-                <button className="button Dialog-button has-background-dark is-link">
-                    {backText}
+            { back &&
+                <button
+                    className="button Dialog-button has-background-dark is-link"
+                    onClick={back.onClick}>
+                    {back.text}
                 </button>
             }
-            <button className="button Dialog-button has-background-primary is-link">
-                {nextText}
-            </button>
-        </footer>
+            <button
+                className="button Dialog-button has-background-primary is-link"
+                onClick={next.onClick}>
+                    {next.text}
+                </button>
+            </footer>
     </div>
 );
 

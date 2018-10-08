@@ -10,14 +10,14 @@ class RegistrationState {
         return this.dialogs[this.selectedDialogIndex];
     }
 
-    @action
+    @action.bound
     public back(): void {
         if (this.selectedDialogIndex > 0) {
             this.selectedDialogIndex -= 1;
         }
     }
 
-    @action
+    @action.bound
     public next(): void {
         if (this.selectedDialogIndex < this.dialogs.length - 1) {
             this.selectedDialogIndex += 1;
