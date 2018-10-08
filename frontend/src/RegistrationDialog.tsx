@@ -2,7 +2,9 @@ import * as React from 'react';
 import Dialog from "./Dialog";
 
 const RegistrationDialog = () => (
-    <Dialog title="Registration">
+    <Dialog
+        title="Registration"
+        nextText="Next">
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>

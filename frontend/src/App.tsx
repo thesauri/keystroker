@@ -14,14 +14,6 @@ class App extends React.Component {
           </div>
         </nav>
         <RegistrationDialog />
-        <footer className="App-footer navbar is-fixed-bottom">
-          <button className="button has-background-dark is-link">
-            Back
-          </button>
-          <button className="button has-background-primary is-link">
-            Next
-          </button>
-        </footer>
       </div>
     );
   }
