@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import RegistrationDialog from './RegistrationDialog';
+import Registration from "./Registration";
 
 class App extends React.Component {
   public render() {
@@ -13,7 +13,7 @@ class App extends React.Component {
             </h1>
           </div>
         </nav>
-        <RegistrationDialog />
+        <Registration />
       </div>
     );
   }
