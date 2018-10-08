@@ -1,6 +1,7 @@
 import * as React from "react";
 import Dialog from './Dialog';
 import RegistrationState from './state/RegistrationState';
+import PatternLock from './PatternLock';
 
 const PatternDialog = () => ( 
     <Dialog
@@ -14,9 +15,7 @@ const PatternDialog = () => (
             text: "Next"
         }}
     >
-        <h1>
-            Hello world!
-        </h1>
+        <PatternLock />
     </Dialog>
  )
 

@@ -5,7 +5,7 @@ import PatternDialog from '../PatternDialog';
 
 class RegistrationState {
     @observable private selectedDialogIndex: number = 0;
-    private dialogs: Array<() => JSX.Element> = [EmailDialog, PasswordDialog, PatternDialog];
+    private dialogs: Array<() => JSX.Element> = [PatternDialog, EmailDialog, PasswordDialog];
 
     @computed
     get CurrentDialog(): () => JSX.Element {
