@@ -5,6 +5,10 @@ import RegistrationState from "./state/RegistrationState";
 const PasswordDialog = () => (
     <Dialog
         title="Password"
+        back={{
+            onClick: RegistrationState.back,
+            text: "Back"
+        }}
         next={{
             onClick: RegistrationState.next,
             text: "Next"
