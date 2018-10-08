@@ -1,2 +1,11 @@
 .App {
 }
+
+footer.App-footer {
+  display: flex;
+}
+
+button.button {
+  flex: 1;
+  border-radius: 0;
+}
