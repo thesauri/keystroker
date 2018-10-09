@@ -61,6 +61,8 @@ class PatternLock extends React.Component<Props, State> {
     private updateCanvas() {
         const context = this.canvas.current!.getContext("2d")!;
         context.clearRect(0, 0, this.state.width, this.state.height);
+        context.fillStyle = "#363636";
+        context.strokeStyle = "#363636";
 
         this.drawPoints(context);
 
