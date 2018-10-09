@@ -85,9 +85,11 @@ const PatternConfirmedDialog = () => (
             text: "Next"
         }}
     >
-        <h1>
-            The pattern was entered successfully!
-        </h1>
+        <section className="section">
+            <h1>
+                The pattern was entered successfully!
+            </h1>
+        </section>
     </Dialog>
  );
 

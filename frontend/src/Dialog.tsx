@@ -31,7 +31,7 @@ class Dialog extends React.Component<Props, any> {
 
     public render() {
         return (
-            <div>
+            <div className="Dialog-root">
                 <section className="hero is-primary">
                     <div className="hero-body">
                         <div className="container">
@@ -49,23 +49,21 @@ class Dialog extends React.Component<Props, any> {
                     }
                     {this.props.children}
                 </div>
-                <div className="container">
-                    <footer className="Dialog-footer navbar is-fixed-bottom">
-                        { this.props.back &&
-                            <button
-                                className="button Dialog-button has-background-dark is-link"
-                                onClick={this.props.back.onClick}>
-                                {this.props.back.text}
-                            </button>
-                        }
+                <footer className="Dialog-footer">
+                    { this.props.back &&
                         <button
-                            className="button Dialog-button has-background-primary is-link"
-                            onClick={this.props.next.onClick}
-                            disabled={this.props.next.disabled}>
-                                {this.props.next.text}
+                            className="button Dialog-button has-background-dark is-link"
+                            onClick={this.props.back.onClick}>
+                            {this.props.back.text}
                         </button>
-                    </footer>
-                </div>
+                    }
+                    <button
+                        className="button Dialog-button has-background-primary is-link"
+                        onClick={this.props.next.onClick}
+                        disabled={this.props.next.disabled}>
+                            {this.props.next.text}
+                    </button>
+                </footer>
             </div>
         );
     }

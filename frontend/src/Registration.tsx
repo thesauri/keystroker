@@ -5,9 +5,7 @@ import RegistrationState from "./state/RegistrationState";
 const Registration = observer(() => {
     const { CurrentDialog } = RegistrationState;
     return (
-        <div>
-            <CurrentDialog />
-        </div>
+        <CurrentDialog />
     );
 });
 
