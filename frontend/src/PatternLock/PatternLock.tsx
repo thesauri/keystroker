@@ -2,6 +2,7 @@ import * as React from "react";
 import { Vector2d } from './Vector2d';
 
 export interface Props {
+    onPatternEntered: (pattern: number[]) => any;
     pointRadius: number;
 }
 
@@ -38,7 +39,7 @@ class PatternLock extends React.Component<Props, State> {
         this.updateCanvas();
     }
 
-    public componentWillUpdate() {
+    public componentDidUpdate() {
         this.updateCanvas();
     }
 
@@ -124,6 +125,7 @@ class PatternLock extends React.Component<Props, State> {
     }
 
     private touchEnd(event: TouchEvent) {
+        this.props.onPatternEntered(this.state.enteredIndices);
         this.setState({
             currentPosition: undefined,
             enteredIndices: [],

@@ -16,8 +16,9 @@ const PatternDialog = () => (
         }}
     >
         <PatternLock
+            onPatternEntered={RegistrationState.next}
             pointRadius={8} />
     </Dialog>
- )
+);
 
 export default PatternDialog;
