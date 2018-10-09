@@ -15,43 +15,66 @@ export interface Props {
     notification?: string;
 }
 
-const Dialog = ({ title, children, back, next, notification }: Props) => (
-    <div>
-        <section className="hero is-primary">
-            <div className="hero-body">
-                <div className="container">
-                    <h1 className="title">
-                        {title}
-                    </h1>
-                </div>
-            </div>
-        </section>
-        <section className="section">
-            <div className="container">
-                { notification &&
-                    <div className="notification is-danger">
-                        {notification}
+class Dialog extends React.Component<Props, any> {
+    constructor(props: Props) {
+        super(props);
+        this.onKeyPress = this.onKeyPress.bind(this);
+    }
+
+    public componentDidMount() {
+        document.addEventListener("keypress", this.onKeyPress);
+    }
+
+    public componentWillUnmount() {
+        document.removeEventListener("keypress", this.onKeyPress);
+    }
+
+    public render() {
+        return (
+            <div>
+                <section className="hero is-primary">
+                    <div className="hero-body">
+                        <div className="container">
+                            <h1 className="title">
+                                {this.props.title}
+                            </h1>
+                        </div>
                     </div>
-                }
-                {children}
-                <footer className="Dialog-footer navbar is-fixed-bottom">
-                    { back &&
-                        <button
-                            className="button Dialog-button has-background-dark is-link"
-                            onClick={back.onClick}>
-                            {back.text}
-                        </button>
-                    }
-                    <button
-                        className="button Dialog-button has-background-primary is-link"
-                        onClick={next.onClick}
-                        disabled={next.disabled}>
-                            {next.text}
-                    </button>
-                </footer>
+                </section>
+                <section className="section">
+                    <div className="container">
+                        { this.props.notification &&
+                            <div className="notification is-danger">
+                                {this.props.notification}
+                            </div>
+                        }
+                        {this.props.children}
+                        <footer className="Dialog-footer navbar is-fixed-bottom">
+                            { this.props.back &&
+                                <button
+                                    className="button Dialog-button has-background-dark is-link"
+                                    onClick={this.props.back.onClick}>
+                                    {this.props.back.text}
+                                </button>
+                            }
+                            <button
+                                className="button Dialog-button has-background-primary is-link"
+                                onClick={this.props.next.onClick}
+                                disabled={this.props.next.disabled}>
+                                    {this.props.next.text}
+                            </button>
+                        </footer>
+                    </div>
+                </section>
             </div>
-        </section>
-    </div>
-);
+        );
+    }
+
+    private onKeyPress(event: KeyboardEvent)  {
+        if (event.key === "Enter") {
+            this.props.next.onClick();
+        }
+    }
+}
 
 export default Dialog;
