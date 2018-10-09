@@ -10,7 +10,7 @@ interface State {
     height: number;
     isTouched: boolean;
     currentPosition?: Vector2d;
-    startPosition?: Vector2d;
+    enteredIndices: number[];
 }
 
 class PatternLock extends React.Component<Props, State> {
@@ -20,6 +20,7 @@ class PatternLock extends React.Component<Props, State> {
         super(props);
         this.canvas = React.createRef();
         this.state = {
+            enteredIndices: [],
             height: 400,
             isTouched: true,
             width: 350
@@ -63,11 +64,15 @@ class PatternLock extends React.Component<Props, State> {
 
         this.drawPoints(context);
 
-        if (this.state.startPosition && this.state.currentPosition) {
+        if (this.state.enteredIndices.length > 0 && this.state.currentPosition) {
+            const lastPositionIndex = this.state.enteredIndices[this.state.enteredIndices.length - 1];
+            const startPosition = this.pointPosition(lastPositionIndex);
             context.beginPath();
-            context.moveTo(this.state.startPosition.x, this.state.startPosition.y);
+            context.moveTo(startPosition.x, startPosition.y);
             context.lineTo(this.state.currentPosition.x, this.state.currentPosition.y);
             context.stroke();
+
+            this.drawEnteredPoints(context);
         }
     }
 
@@ -81,20 +86,32 @@ class PatternLock extends React.Component<Props, State> {
         }
     }
 
+    private drawEnteredPoints(context: CanvasRenderingContext2D) {
+        for (let i = 0; i <= this.state.enteredIndices.length - 2; i++) {
+            const fromPosition = this.pointPosition(this.state.enteredIndices[i]);
+            const toPosition = this.pointPosition(this.state.enteredIndices[i + 1]);
+            context.beginPath();
+            context.moveTo(fromPosition.x, fromPosition.y);
+            context.lineTo(toPosition.x, toPosition.y);
+            context.stroke();
+        }
+
+    }
+
     private pointPosition(pointIndex: number): Vector2d {
         const x = (2 * (pointIndex % 3) + 1) * (this.state.width / 6.0);
         const y = (2 * Math.floor(pointIndex / 3) + 1) * (this.state.height / 6.0);
         return new Vector2d(x, y);
     }
 
-    private pointToPointIndex(point: Vector2d): number {
-        const findNearestPointIndex = (pointIndex: number = 8, nearestIndex?: number, nearestDistance?: number): [number, number] => {
+    private pointToPointIndex(point: Vector2d, threshold: number = 1000): number | undefined {
+        const findNearestPointIndex = (pointIndex: number = 8, nearestIndex?: number, nearestDistance?: number): [number?, number?] => {
             if (pointIndex < 0) {
-                return [nearestIndex!, nearestDistance!];
+                return [nearestIndex, nearestDistance];
             }
             const position = this.pointPosition(pointIndex);
             const distance = Math.pow(point.x - position.x, 2) + Math.pow(point.y - position.y, 2);
-            if (!nearestDistance || distance < nearestDistance) {
+            if (distance <= threshold && (!nearestDistance || distance < nearestDistance)) {
                 return findNearestPointIndex(pointIndex - 1, pointIndex, distance);
             } else {
                 return findNearestPointIndex(pointIndex - 1, nearestIndex, nearestDistance);
@@ -104,11 +121,11 @@ class PatternLock extends React.Component<Props, State> {
         return findNearestPointIndex()[0];
     }
 
-    private touchEnd() {
+    private touchEnd(event: TouchEvent) {
         this.setState({
             currentPosition: undefined,
-            isTouched: false,
-            startPosition: undefined
+            enteredIndices: [],
+            isTouched: false
         });
     }
 
@@ -117,12 +134,13 @@ class PatternLock extends React.Component<Props, State> {
             event.targetTouches[0].clientX,
             event.targetTouches[0].clientY
         );
-        const startingPointIndex = this.pointToPointIndex(touchStartPosition);
-        const startingPoint = this.pointPosition(startingPointIndex);
-        this.setState({
-            isTouched: true,
-            startPosition: startingPoint
-        });
+        const startIndex = this.pointToPointIndex(touchStartPosition);
+        if (startIndex !== undefined) {
+            this.setState({
+                enteredIndices: [startIndex],
+                isTouched: true
+            });
+        }
     }
 
     private clientToCanvasCoordinates(clientX: number, clientY: number) {
@@ -133,18 +151,35 @@ class PatternLock extends React.Component<Props, State> {
     }
 
     private touchMove(event: TouchEvent) {
-        if (this.state.isTouched) {
-            const currentPosition = this.clientToCanvasCoordinates(
-                event.targetTouches[0].clientX,
-                event.targetTouches[0].clientY
-            );
-
-            if (currentPosition.x >= 0 && currentPosition.x < this.state.width &&
-                currentPosition.y >= 0 && currentPosition.y < this.state.height) {
-                this.setState({ currentPosition });
-            }
-        }
         event.preventDefault();
+
+        if (!this.state.isTouched) {
+            return;
+        }
+
+        const currentPosition = this.clientToCanvasCoordinates(
+            event.targetTouches[0].clientX,
+            event.targetTouches[0].clientY
+        );
+        this.setState({
+            currentPosition
+        });
+
+        if (currentPosition.x < 0 || currentPosition.x >= this.state.width &&
+            currentPosition.y < 0 && currentPosition.y >= this.state.height) {
+            return;
+        }
+
+        const endIndex = this.pointToPointIndex(currentPosition);
+        const lastIndex = this.state.enteredIndices[this.state.enteredIndices.length - 1];
+        if (endIndex === undefined || endIndex === lastIndex) {
+            return;
+        }
+
+        const newEnteredIndices = [...this.state.enteredIndices, endIndex];
+        this.setState({
+            enteredIndices: newEnteredIndices
+        });
     }
 }
 
