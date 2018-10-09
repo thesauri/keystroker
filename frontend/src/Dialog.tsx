@@ -41,13 +41,15 @@ class Dialog extends React.Component<Props, any> {
                         </div>
                     </div>
                 </section>
-                <div className="container">
+                <div className="container Dialog-content">
                     { this.props.notification &&
                         <div className="notification is-danger">
                             {this.props.notification}
                         </div>
                     }
                     {this.props.children}
+                </div>
+                <div className="container">
                     <footer className="Dialog-footer navbar is-fixed-bottom">
                         { this.props.back &&
                             <button

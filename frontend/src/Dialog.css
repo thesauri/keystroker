@@ -6,3 +6,8 @@ button.Dialog-button.button {
   flex: 1;
   border-radius: 0;
 }
+
+.Dialog-content {
+  display: flex;
+  justify-content: center;
+}

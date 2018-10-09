@@ -2,13 +2,13 @@ import * as React from "react";
 import { Vector2d } from './Vector2d';
 
 export interface Props {
+    width: number;
+    height: number;
     onPatternEntered: (pattern: number[]) => any;
     pointRadius: number;
 }
 
 interface State {
-    width: number;
-    height: number;
     isTouched: boolean;
     currentPosition?: Vector2d;
     enteredIndices: number[];
@@ -22,9 +22,7 @@ class PatternLock extends React.Component<Props, State> {
         this.canvas = React.createRef();
         this.state = {
             enteredIndices: [],
-            height: 400,
-            isTouched: true,
-            width: 350
+            isTouched: true
         }
         this.touchMove = this.touchMove.bind(this);
         this.touchEnd = this.touchEnd.bind(this);
@@ -53,15 +51,15 @@ class PatternLock extends React.Component<Props, State> {
     public render() {
         return (
             <canvas
-                width={this.state.width}
-                height={this.state.height}
+                width={this.props.width}
+                height={this.props.height}
                 ref={this.canvas} />
         );
     }
 
     private updateCanvas() {
         const context = this.canvas.current!.getContext("2d")!;
-        context.clearRect(0, 0, this.state.width, this.state.height);
+        context.clearRect(0, 0, this.props.width, this.props.height);
         context.fillStyle = "#363636";
         context.strokeStyle = "#363636";
 
@@ -102,8 +100,8 @@ class PatternLock extends React.Component<Props, State> {
     }
 
     private pointPosition(pointIndex: number): Vector2d {
-        const x = (2 * (pointIndex % 3) + 1) * (this.state.width / 6.0);
-        const y = (2 * Math.floor(pointIndex / 3) + 1) * (this.state.height / 6.0);
+        const x = (2 * (pointIndex % 3) + 1) * (this.props.width / 6.0);
+        const y = (2 * Math.floor(pointIndex / 3) + 1) * (this.props.height / 6.0);
         return new Vector2d(x, y);
     }
 
@@ -169,8 +167,8 @@ class PatternLock extends React.Component<Props, State> {
             currentPosition
         });
 
-        if (currentPosition.x < 0 || currentPosition.x >= this.state.width &&
-            currentPosition.y < 0 && currentPosition.y >= this.state.height) {
+        if (currentPosition.x < 0 || currentPosition.x >= this.props.width &&
+            currentPosition.y < 0 && currentPosition.y >= this.props.height) {
             return;
         }
 

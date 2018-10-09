@@ -5,6 +5,20 @@ import Pattern, { State } from "./state/Pattern";
 import RegistrationState from './state/RegistrationState';
 import PatternLock from './PatternLock/PatternLock';
 
+interface IStyledPatternLock {
+    onPatternEntered: (pattern: number[]) => any;
+}
+
+const StyledPatternLock = ({ onPatternEntered }: IStyledPatternLock) => (
+    <PatternLock
+        height={350}
+        width={350}
+        onPatternEntered={onPatternEntered}
+        pointRadius={8} />
+);
+
+
+
 const EnterPatternDialog = () => (
     <Dialog
         title="Choose a pattern"
@@ -18,9 +32,8 @@ const EnterPatternDialog = () => (
             text: "Next"
         }}
     >
-        <PatternLock
-            onPatternEntered={Pattern.updatePattern}
-            pointRadius={8} />
+        <StyledPatternLock
+            onPatternEntered={Pattern.updatePattern} />
     </Dialog>
 );
 
@@ -37,9 +50,8 @@ const ConfirmPatternDialog = () => (
             text: "Next"
         }}
     >
-        <PatternLock
-            onPatternEntered={Pattern.updateConfirmPattern}
-            pointRadius={8} />
+        <StyledPatternLock
+            onPatternEntered={Pattern.updateConfirmPattern} />
     </Dialog>
 );
 
@@ -56,9 +68,8 @@ const InvalidPatternDialog = () => (
             text: "Next"
         }}
     >
-        <PatternLock
-            onPatternEntered={Pattern.updatePattern}
-            pointRadius={8} />
+        <StyledPatternLock
+            onPatternEntered={Pattern.updatePattern} />
     </Dialog>
 );
 
@@ -93,9 +104,8 @@ const PatternConfirmedDialog = () => (
             text: "Next"
         }}
     >
-        <PatternLock
-            onPatternEntered={Pattern.updatePattern}
-            pointRadius={8} />
+        <StyledPatternLock
+            onPatternEntered={Pattern.updatePattern} />
     </Dialog>
 );
 
