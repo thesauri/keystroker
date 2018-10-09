@@ -1,7 +1,7 @@
 import * as React from "react";
 import Dialog from './Dialog';
 import RegistrationState from './state/RegistrationState';
-import PatternLock from './PatternLock';
+import PatternLock from './PatternLock/PatternLock';
 
 const PatternDialog = () => ( 
     <Dialog

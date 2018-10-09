@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Vector2d } from './Vector2d';
 
 export interface Props {
     tmp?: string;
@@ -8,9 +9,10 @@ interface State {
     width: number;
     height: number;
     isTouched: boolean;
-    touchX?: number;
-    touchY?: number;
+    currentPosition?: Vector2d;
+    startPosition?: Vector2d;
 }
+
 
 class PatternLock extends React.Component<Props, State> {
     private canvas: React.RefObject<HTMLCanvasElement>;
@@ -36,8 +38,7 @@ class PatternLock extends React.Component<Props, State> {
     }
 
     public componentWillUpdate() {
-        // tslint:disable-next-line:no-console
-        console.log(this.state.touchX + " " + this.state.touchY);
+        this.updateCanvas();
     }
 
     public componentWillUnmount() {
@@ -56,30 +57,54 @@ class PatternLock extends React.Component<Props, State> {
         );
     }
 
+    private updateCanvas() {
+        const context = this.canvas.current!.getContext("2d")!;
+        context.clearRect(0, 0, this.state.width, this.state.height);
+
+        if (this.state.startPosition && this.state.currentPosition) {
+            context.beginPath();
+            context.moveTo(this.state.startPosition.x, this.state.startPosition.y);
+            context.lineTo(this.state.currentPosition.x, this.state.currentPosition.y);
+            context.stroke();
+        }
+    }
+
     private touchEnd() {
         this.setState({
-            isTouched: false
+            currentPosition: undefined,
+            isTouched: false,
+            startPosition: undefined
         });
     }
 
-    private touchStart() {
+    private touchStart(event: TouchEvent) {
+        const startPosition = this.clientToCanvasCoordinates(
+            event.targetTouches[0].clientX,
+            event.targetTouches[0].clientY
+        );
         this.setState({
-            isTouched: true
+            isTouched: true,
+            startPosition
         });
+    }
+
+    private clientToCanvasCoordinates(clientX: number, clientY: number) {
+        const { left, top } = this.canvas.current!.getBoundingClientRect();
+        const x = clientX - left;
+        const y = clientY - top;
+        return new Vector2d(x, y);
     }
 
     private touchMove(event: TouchEvent) {
         if (this.state.isTouched) {
-            const { left, top } = this.canvas.current!.getBoundingClientRect();
-            const touchX = event.targetTouches[0].clientX - left;
-            const touchY = event.targetTouches[0].clientY - top;
+            const currentPosition = this.clientToCanvasCoordinates(
+                event.targetTouches[0].clientX,
+                event.targetTouches[0].clientY
+            );
 
-            if (touchX >= 0 && touchX < this.state.width &&
-                touchY >= 0 && touchY < this.state.height) {
-                this.setState({
-                    touchX,
-                    touchY
-                });
+            if (currentPosition.x >= 0 && currentPosition.x < this.state.width &&
+                currentPosition.y >= 0 && currentPosition.y < this.state.height) {
+                this.setState({ currentPosition });
             }
         }
         event.preventDefault();
