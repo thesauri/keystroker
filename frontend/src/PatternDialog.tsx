@@ -28,7 +28,7 @@ const ConfirmPatternDialog = () => (
     <Dialog
         title="Confirm pattern"
         back={{
-            onClick: RegistrationState.back,
+            onClick: Pattern.resetPattern,
             text: "Back"
         }}
         next={{

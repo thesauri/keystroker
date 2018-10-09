@@ -23,6 +23,12 @@ class Pattern {
         this.confirmPattern = newConfirmPattern;
     }
 
+    @action.bound
+    public resetPattern() {
+        this.pattern = undefined;
+        this.confirmPattern = undefined;
+    }
+
     @computed
     get state(): State {
         if (!this.pattern) {
