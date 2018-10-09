@@ -13,6 +13,7 @@ const EnterPatternDialog = () => (
             text: "Back"
         }}
         next={{
+            disabled: true,
             onClick: RegistrationState.next,
             text: "Next"
         }}
@@ -31,6 +32,7 @@ const ConfirmPatternDialog = () => (
             text: "Back"
         }}
         next={{
+            disabled: true,
             onClick: RegistrationState.next,
             text: "Next"
         }}
@@ -49,6 +51,7 @@ const InvalidPatternDialog = () => (
             text: "Back"
         }}
         next={{
+            disabled: true,
             onClick: RegistrationState.next,
             text: "Next"
         }}
@@ -85,6 +88,7 @@ const PatternConfirmedDialog = () => (
             text: "Back"
         }}
         next={{
+            disabled: true,
             onClick: RegistrationState.next,
             text: "Next"
         }}

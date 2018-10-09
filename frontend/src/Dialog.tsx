@@ -4,6 +4,7 @@ import "./Dialog.css";
 interface ButtonProps {
     text: string;
     onClick: () => any;
+    disabled?: boolean;
 }
 
 export interface Props {
@@ -43,7 +44,8 @@ const Dialog = ({ title, children, back, next, notification }: Props) => (
                     }
                     <button
                         className="button Dialog-button has-background-primary is-link"
-                        onClick={next.onClick}>
+                        onClick={next.onClick}
+                        disabled={next.disabled}>
                             {next.text}
                     </button>
                 </footer>
