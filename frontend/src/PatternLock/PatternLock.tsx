@@ -2,7 +2,7 @@ import * as React from "react";
 import { Vector2d } from './Vector2d';
 
 export interface Props {
-    tmp?: string;
+    pointRadius: number;
 }
 
 interface State {
@@ -12,7 +12,6 @@ interface State {
     currentPosition?: Vector2d;
     startPosition?: Vector2d;
 }
-
 
 class PatternLock extends React.Component<Props, State> {
     private canvas: React.RefObject<HTMLCanvasElement>;
@@ -35,6 +34,7 @@ class PatternLock extends React.Component<Props, State> {
         this.canvas.current!.addEventListener("touchend", this.touchEnd);
         this.canvas.current!.addEventListener("touchcancel", this.touchEnd);
         this.canvas.current!.addEventListener("touchstart", this.touchStart);
+        this.updateCanvas();
     }
 
     public componentWillUpdate() {
@@ -61,12 +61,30 @@ class PatternLock extends React.Component<Props, State> {
         const context = this.canvas.current!.getContext("2d")!;
         context.clearRect(0, 0, this.state.width, this.state.height);
 
+        this.drawPoints(context);
+
         if (this.state.startPosition && this.state.currentPosition) {
             context.beginPath();
             context.moveTo(this.state.startPosition.x, this.state.startPosition.y);
             context.lineTo(this.state.currentPosition.x, this.state.currentPosition.y);
             context.stroke();
         }
+    }
+
+    private drawPoints(context: CanvasRenderingContext2D) {
+        for (let pointIndex = 0; pointIndex < 9; pointIndex++) {
+            const { x, y } = this.pointPosition(pointIndex);
+
+            context.beginPath();
+            context.arc(x, y, this.props.pointRadius, 0, 2 * Math.PI);
+            context.fill();
+        }
+    }
+
+    private pointPosition(pointIndex: number): Vector2d {
+        const x = (2 * (pointIndex % 3) + 1) * (this.state.width / 6.0);
+        const y = (2 * Math.floor(pointIndex / 3) + 1) * (this.state.height / 6.0);
+        return new Vector2d(x, y);
     }
 
     private touchEnd() {

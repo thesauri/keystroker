@@ -15,7 +15,8 @@ const PatternDialog = () => (
             text: "Next"
         }}
     >
-        <PatternLock />
+        <PatternLock
+            pointRadius={8} />
     </Dialog>
  )
 
