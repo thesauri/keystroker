@@ -87,6 +87,23 @@ class PatternLock extends React.Component<Props, State> {
         return new Vector2d(x, y);
     }
 
+    private pointToPointIndex(point: Vector2d): number {
+        const findNearestPointIndex = (pointIndex: number = 8, nearestIndex?: number, nearestDistance?: number): [number, number] => {
+            if (pointIndex < 0) {
+                return [nearestIndex!, nearestDistance!];
+            }
+            const position = this.pointPosition(pointIndex);
+            const distance = Math.pow(point.x - position.x, 2) + Math.pow(point.y - position.y, 2);
+            if (!nearestDistance || distance < nearestDistance) {
+                return findNearestPointIndex(pointIndex - 1, pointIndex, distance);
+            } else {
+                return findNearestPointIndex(pointIndex - 1, nearestIndex, nearestDistance);
+            }
+        }
+
+        return findNearestPointIndex()[0];
+    }
+
     private touchEnd() {
         this.setState({
             currentPosition: undefined,
@@ -96,13 +113,15 @@ class PatternLock extends React.Component<Props, State> {
     }
 
     private touchStart(event: TouchEvent) {
-        const startPosition = this.clientToCanvasCoordinates(
+        const touchStartPosition = this.clientToCanvasCoordinates(
             event.targetTouches[0].clientX,
             event.targetTouches[0].clientY
         );
+        const startingPointIndex = this.pointToPointIndex(touchStartPosition);
+        const startingPoint = this.pointPosition(startingPointIndex);
         this.setState({
             isTouched: true,
-            startPosition
+            startPosition: startingPoint
         });
     }
 
