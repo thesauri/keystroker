@@ -30,34 +30,36 @@ const PasswordDialog = observer(() => (
             onClick: onNext,
             text: "Next"
         }}>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
-        <div className="field">
-            <label className="label">
-                Password
-            </label>
-            <div className="control">
-                <input
-                    onChange={onPasswordChange}
-                    value={Password.password}
-                    className="input"
-                    type="password"
-                    autoFocus={true} />
+        <section className="section">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <div className="field">
+                <label className="label">
+                    Password
+                </label>
+                <div className="control">
+                    <input
+                        onChange={onPasswordChange}
+                        value={Password.password}
+                        className="input"
+                        type="password"
+                        autoFocus={true} />
+                </div>
             </div>
-        </div>
-        <div className="field">
-            <label className="label">
-                Confirm password
-            </label>
-            <div className="control">
-                <input
-                    onChange={onConfirmPasswordChange}
-                    value={Password.confirmPassword}
-                    className="input"
-                    type="password" />
+            <div className="field">
+                <label className="label">
+                    Confirm password
+                </label>
+                <div className="control">
+                    <input
+                        onChange={onConfirmPasswordChange}
+                        value={Password.confirmPassword}
+                        className="input"
+                        type="password" />
+                </div>
             </div>
-        </div>
+        </section>
     </Dialog>
 ));
 

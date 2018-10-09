@@ -41,31 +41,29 @@ class Dialog extends React.Component<Props, any> {
                         </div>
                     </div>
                 </section>
-                <section className="section">
-                    <div className="container">
-                        { this.props.notification &&
-                            <div className="notification is-danger">
-                                {this.props.notification}
-                            </div>
-                        }
-                        {this.props.children}
-                        <footer className="Dialog-footer navbar is-fixed-bottom">
-                            { this.props.back &&
-                                <button
-                                    className="button Dialog-button has-background-dark is-link"
-                                    onClick={this.props.back.onClick}>
-                                    {this.props.back.text}
-                                </button>
-                            }
+                <div className="container">
+                    { this.props.notification &&
+                        <div className="notification is-danger">
+                            {this.props.notification}
+                        </div>
+                    }
+                    {this.props.children}
+                    <footer className="Dialog-footer navbar is-fixed-bottom">
+                        { this.props.back &&
                             <button
-                                className="button Dialog-button has-background-primary is-link"
-                                onClick={this.props.next.onClick}
-                                disabled={this.props.next.disabled}>
-                                    {this.props.next.text}
+                                className="button Dialog-button has-background-dark is-link"
+                                onClick={this.props.back.onClick}>
+                                {this.props.back.text}
                             </button>
-                        </footer>
-                    </div>
-                </section>
+                        }
+                        <button
+                            className="button Dialog-button has-background-primary is-link"
+                            onClick={this.props.next.onClick}
+                            disabled={this.props.next.disabled}>
+                                {this.props.next.text}
+                        </button>
+                    </footer>
+                </div>
             </div>
         );
     }
