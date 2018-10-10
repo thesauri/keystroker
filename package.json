@@ -1,0 +1,21 @@
+{
+  "name": "keystroker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/build/app.js",
+  "scripts": {
+    "postinstall": "./bash.sh",
+    "start": "node backend/build/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thesauri/keystroker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thesauri/keystroker/issues"
+  },
+  "homepage": "https://github.com/thesauri/keystroker#readme"
+}
