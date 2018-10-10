@@ -9,7 +9,7 @@
     "build-frontend": "cd frontend && npm install && npm run build",
     "copy-frontend": "cp -r frontend/build/ backend/build/dist",
     "posinstall": "cd backend/ && npm install",
-    "start": "node backend/build/app.js",
+    "start": "cd backend && npm install && node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
