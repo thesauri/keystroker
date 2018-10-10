@@ -36,7 +36,7 @@ const EmailDialog = observer(() => (
                         value={Email.email}
                         className="input"
                         type="email"
-                        placeholder="username@aalto.fi"
+                        placeholder="E.g. username@aalto.fi"
                         autoFocus={true} />
                 </div>
             </div>

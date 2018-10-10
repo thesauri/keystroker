@@ -11,7 +11,7 @@ export interface Props {
     title: string;
     children: React.ReactNode;
     back?: ButtonProps;
-    next: ButtonProps;
+    next?: ButtonProps;
     notification?: string;
 }
 
@@ -57,19 +57,21 @@ class Dialog extends React.Component<Props, any> {
                             {this.props.back.text}
                         </button>
                     }
-                    <button
-                        className="button Dialog-button has-background-primary is-link"
-                        onClick={this.props.next.onClick}
-                        disabled={this.props.next.disabled}>
-                            {this.props.next.text}
-                    </button>
+                    { this.props.next &&
+                        <button
+                            className="button Dialog-button has-background-primary is-link"
+                            onClick={this.props.next.onClick}
+                            disabled={this.props.next.disabled}>
+                                {this.props.next.text}
+                        </button>
+                    }
                 </footer>
             </div>
         );
     }
 
     private onKeyPress(event: KeyboardEvent)  {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && this.props.next) {
             this.props.next.onClick();
         }
     }
