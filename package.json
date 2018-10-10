@@ -4,11 +4,11 @@
   "description": "",
   "main": "backend/build/app.js",
   "scripts": {
-    "build": "npm run build-backend && npm run build-frontend && npm run copy-backend && npm run copy-frontend",
-    "build-backend": "cd backend/ && npm install && tsc",
+    "build": "npm run build-backend && npm run build-frontend && npm run copy-frontend",
+    "build-backend": "cd backend/ && npm install && tsc --build",
     "build-frontend": "cd frontend && npm install && npm run build",
-    "copy-backend": "cp -r backend/build/ build",
-    "copy-frontend": "cp -r frontend/build/ build/dist",
+    "copy-frontend": "cp -r frontend/build/ backend/build/dist",
+    "posinstall": "cd backend/ && npm install",
     "start": "node backend/build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
