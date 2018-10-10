@@ -86,9 +86,15 @@ const PatternConfirmedDialog = () => (
         }}
     >
         <section className="section">
-            <h1>
+            <p>
                 The pattern was entered successfully!
-            </h1>
+            </p>
+            <p>
+                In case you want to change the pattern, click the button below. Otherwise, click next to finish the registration.
+            </p>
+            <button className="button" onClick={Pattern.resetPattern}>
+                Change pattern
+            </button>
         </section>
     </Dialog>
  );
