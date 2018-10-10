@@ -16,7 +16,7 @@ const onNext = () => {
 
 const EmailDialog = observer(() => (
     <Dialog
-        title="Registration"
+        title="Email"
         notification={Email.notification}
         next={{
             onClick: onNext,
@@ -24,16 +24,7 @@ const EmailDialog = observer(() => (
         }}>
         <section className="section">
             <p>
-                Thank you for your interest in participating in this study!
-            </p>
-            <p>
-                During the two weeks from Monday October 15 to Sunday October 28, you will be asked to log in to this website four times a day. To make this as simple as possible, you will receive reminders by email with links for logging in.
-            </p>
-            <p>
-                Logging in is done using a password and a pattern that you will assign in the next steps. As the purpose of the study is to compare login methods for mobile phones, please log in using your mobile phone.
-            </p>
-            <p>
-                The total time commitment for this study is estimated to be 1–2 hours. This will be compensated with two cinema tickets. 🍿
+                Enter the email address you want to receive the login links to
             </p>
             <div className="field">
                 <label className="label">

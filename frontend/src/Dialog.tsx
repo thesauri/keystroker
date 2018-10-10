@@ -43,7 +43,7 @@ class Dialog extends React.Component<Props, any> {
                 </section>
                 <div className="container Dialog-content">
                     { this.props.notification &&
-                        <div className="notification is-danger">
+                        <div className="Dialog-notification notification is-danger">
                             {this.props.notification}
                         </div>
                     }
