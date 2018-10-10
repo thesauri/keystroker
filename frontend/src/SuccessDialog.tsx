@@ -1,14 +1,9 @@
 import * as React from "react";
 import Dialog from "./Dialog";
-import RegistrationState from "./state/RegistrationState";
 
 const RegistrationDialog = () => (
     <Dialog
-        title="Registration successful! 🎉"
-        next={{
-            onClick: RegistrationState.next,
-            text: "Next"
-        }}>
+        title="Registration successful! 🎉">
         <section className="section">
             <p>
                 Thank you for signing up to the study!

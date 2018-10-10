@@ -28,7 +28,7 @@ const TOCDialog = observer(() => (
         }}>
         <section className="section">
             <p>
-                I, bla bla bla nice TOC here
+                I, bla bla bla nice TOC here and I, bla bla bla nice TOC here
             </p>
             <div className="field">
                 <label className="checkbox">
