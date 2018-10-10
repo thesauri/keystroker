@@ -4,7 +4,10 @@
   "description": "",
   "main": "backend/build/app.js",
   "scripts": {
-    "postinstall": "./bash.sh",
+    "build-backend": "cd backend/ && tsc",
+    "build-frontend": "cd frontend && npm install && npm run build",
+    "copy-frontend": "cp -r frontend/build/ backend/build/dist",
+    "postinstall": "npm run build-backend && npm run build-frontend && npm run copy-frontend",
     "start": "node backend/build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
