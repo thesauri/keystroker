@@ -1,2 +1,7 @@
 .App {
+
+}
+
+.App .container {
+    margin: 0 !important;
 }
