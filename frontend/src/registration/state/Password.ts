@@ -20,8 +20,8 @@ class Password {
         if (this.password !== this.confirmPassword) {
             this.notification = "The passwords must match"
             return false;
-        } else if (this.password.length < 8) {
-            this.notification = "The password must be at least 8 characters long"
+        } else if (this.password.length < 10) {
+            this.notification = "The password must be at least 10 characters long"
             return false;
         } else {
             return true;
