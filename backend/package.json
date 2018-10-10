@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "postinstall": "cd ../frontend/ && npm run build && cp -r build/ ../backend/build/dist",
     "start": "tsc && node build/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
