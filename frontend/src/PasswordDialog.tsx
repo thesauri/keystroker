@@ -32,7 +32,7 @@ const PasswordDialog = observer(() => (
         }}>
         <section className="section">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac placerat lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Choose a password. The password should be at least 8 characters long and not in use anywhere else.
             </p>
             <div className="field">
                 <label className="label">
