@@ -2,7 +2,7 @@ import * as React from "react";
 import LoginState from "./state/LoginState";
 import Dialog from '../Dialog';
 
-const PasswordDialog = () => (
+const EnterPasswordDialog = () => (
     <Dialog
         title="Login"
         next={{
@@ -36,4 +36,4 @@ const PasswordDialog = () => (
     </Dialog>
 );
 
-export default PasswordDialog;
+export default EnterPasswordDialog;
