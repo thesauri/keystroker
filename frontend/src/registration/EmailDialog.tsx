@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react"
-import Dialog from "./Dialog";
+import Dialog from "../Dialog";
 import Email from "./state/Email";
 import RegistrationState from "./state/RegistrationState";
 

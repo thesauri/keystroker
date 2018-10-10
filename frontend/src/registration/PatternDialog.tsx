@@ -1,9 +1,9 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import Dialog from './Dialog';
+import Dialog from '../Dialog';
 import Pattern, { State } from "./state/Pattern";
 import RegistrationState from './state/RegistrationState';
-import PatternLock from './PatternLock/PatternLock';
+import PatternLock from '../PatternLock/PatternLock';
 
 interface IStyledPatternLock {
     onPatternEntered: (pattern: number[]) => any;
