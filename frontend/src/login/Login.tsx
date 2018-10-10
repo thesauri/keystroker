@@ -7,6 +7,6 @@ const Login = observer(() => {
     return (
         <CurrentDialog />
     );
- });
+});
 
 export default Login;
