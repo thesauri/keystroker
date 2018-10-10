@@ -44,7 +44,7 @@ class PatternLock extends React.Component<Props, State> {
     public componentWillUnmount() {
         this.canvas.current!.removeEventListener("touchmove", this.touchMove);
         this.canvas.current!.removeEventListener("touchend", this.touchEnd);
-        this.canvas.current!.addEventListener("touchcancel", this.touchEnd);
+        this.canvas.current!.removeEventListener("touchcancel", this.touchEnd);
         this.canvas.current!.removeEventListener("touchstart", this.touchStart);
     }
 

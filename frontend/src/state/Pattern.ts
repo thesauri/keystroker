@@ -40,11 +40,7 @@ class Pattern {
         } else if (this.equalArrays(this.pattern, this.confirmPattern)) {
             return State.PatternConfirmed;
         } else {
-            // tslint:disable-next-line
-            console.log(this.pattern);
-            // tslint:disable-next-line
-            console.log(this.confirmPattern);
-            return State.PatternMismatch;
+           return State.PatternMismatch;
         }
     }
 
