@@ -18,7 +18,6 @@ const StyledPatternLock = ({ onPatternEntered }: IStyledPatternLock) => (
 );
 
 
-
 const EnterPatternDialog = () => (
     <Dialog
         title="Choose a pattern"
@@ -75,7 +74,7 @@ const InvalidPatternDialog = () => (
 
 const PatternConfirmedDialog = () => (
     <Dialog
-        title="Pattern confirmed!"
+        title="Almost there"
         back={{
             onClick: RegistrationState.back,
             text: "Back"
@@ -87,7 +86,7 @@ const PatternConfirmedDialog = () => (
     >
         <section className="section">
             <p>
-                The pattern was entered successfully!
+                The pattern was selected successfully.
             </p>
             <p>
                 In case you want to change the pattern, click the button below. Otherwise, click next to finish the registration.
