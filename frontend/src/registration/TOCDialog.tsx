@@ -24,7 +24,7 @@ const TOCDialog = observer(() => (
         }}
         next={{
             onClick: onNext,
-            text: "Next"
+            text: "Submit"
         }}>
         <section className="section">
             <p>

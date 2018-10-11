@@ -13,7 +13,10 @@ app.use("/login", express.static(__dirname + "/dist/index.html"));
 app.post("/participant", function (req, res) {
     Participant_2.fromJson(req.body)
         .then(Participant_1.createParticipant)
-        .then(function () { return res.send("Success!"); })
+        .then(function () {
+        var body = { message: "Participant added successfully!" };
+        res.json(body);
+    })
         .catch(function (reason) {
         console.log("Error when parsing user: " + reason);
         res.status(400).json({

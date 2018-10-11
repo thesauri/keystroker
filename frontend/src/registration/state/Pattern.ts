@@ -9,13 +9,13 @@ export enum State {
 }
 
 class Pattern {
-    @observable public pattern?: number[];
-    @observable public confirmPattern?: number[];
+    @observable public pattern: number[] = [];
+    @observable public confirmPattern: number[] = [];
 
     @action.bound
     public updatePattern(newPattern: number[]) {
         this.pattern = newPattern;
-        this.confirmPattern = undefined;
+        this.confirmPattern = [];
     }
 
     @action.bound
@@ -25,17 +25,17 @@ class Pattern {
 
     @action.bound
     public resetPattern() {
-        this.pattern = undefined;
-        this.confirmPattern = undefined;
+        this.pattern = [];
+        this.confirmPattern = [];
     }
 
     @computed
     get state(): State {
-        if (!this.pattern) {
+        if (this.pattern.length === 0) {
             return State.Pattern;
         } else if (this.pattern.length < 3) {
             return State.PatternInvalid;
-        } else if (!this.confirmPattern) {
+        } else if (this.confirmPattern.length === 0) {
             return State.ConfirmPattern;
         } else if (this.equalArrays(this.pattern, this.confirmPattern)) {
             return State.PatternConfirmed;

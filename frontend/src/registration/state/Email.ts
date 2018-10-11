@@ -10,6 +10,11 @@ class Email {
     }
 
     @action.bound
+    public setNotification(notification: string) {
+        this.notification = notification;
+    }
+
+    @action.bound
     public validate(): boolean {
         if (this.email.length === 0) {
             this.notification = "Email cannot be empty"
