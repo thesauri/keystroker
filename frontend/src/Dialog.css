@@ -6,6 +6,7 @@ footer.Dialog-footer {
 }
 
 button.Dialog-button.button {
+  height: 3rem;
   flex: 1;
   border-radius: 0;
 }
@@ -15,6 +16,10 @@ button.Dialog-button.button {
   border-radius: 0 !important;
 }
 
+.Dialog-root .hero .hero-body {
+  padding: 2rem 1.5rem;
+}
+
 .Dialog-content {
   flex: 1;
   display: flex;
@@ -22,7 +27,7 @@ button.Dialog-button.button {
 }
 
 .Dialog-content section {
-  padding: 1.5rem 1.5rem;
+  padding: 1.5rem 1.5rem 4.5rem 1.5rem;
 }
 
 .Dialog-content section p {
