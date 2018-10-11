@@ -12,16 +12,15 @@ app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
 
 app.post("/participant", (req, res) => {
-    try {
-        const newParticipant = participantFromJson(req.body);
-        createParticipant(newParticipant);
-        res.send("Success!");
-    } catch (error) {
-        console.log(`Error when parsing user: ${error}`)
-        res.status(400).json({
-            error: error.toString()
+    participantFromJson(req.body)
+        .then(createParticipant)
+        .then(() => res.send("Success!"))
+        .catch(reason => {
+            console.log(`Error when parsing user: ${reason}`)
+            res.status(400).json({
+                error: reason
+            });
         });
-    }
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

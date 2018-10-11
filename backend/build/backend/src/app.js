@@ -11,17 +11,15 @@ app.use(express.json());
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
 app.post("/participant", function (req, res) {
-    try {
-        var newParticipant = Participant_2.fromJson(req.body);
-        Participant_1.createParticipant(newParticipant);
-        res.send("Success!");
-    }
-    catch (error) {
-        console.log("Error when parsing user: " + error);
+    Participant_2.fromJson(req.body)
+        .then(Participant_1.createParticipant)
+        .then(function () { return res.send("Success!"); })
+        .catch(function (reason) {
+        console.log("Error when parsing user: " + reason);
         res.status(400).json({
-            error: error.toString()
+            error: reason
         });
-    }
+    });
 });
 app.listen(PORT, function () { return console.log("Listening on port " + PORT); });
 //# sourceMappingURL=app.js.map
