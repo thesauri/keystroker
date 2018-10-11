@@ -18,6 +18,10 @@ const EmailDialog = observer(() => (
     <Dialog
         title="Email"
         notification={Email.notification}
+        back={{
+            onClick: RegistrationState.back,
+            text: "Back"
+        }}
         next={{
             onClick: onNext,
             text: "Next"
