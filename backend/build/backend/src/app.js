@@ -10,7 +10,7 @@ app.use(express.static(__dirname + "/dist"));
 app.use(express.json());
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
-app.post("/user", function (req, res) {
+app.post("/participant", function (req, res) {
     try {
         var newParticipant = Participant_2.fromJson(req.body);
         Participant_1.createParticipant(newParticipant);

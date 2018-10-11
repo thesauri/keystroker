@@ -7,9 +7,9 @@
     "build": "npm run build-backend && npm run build-frontend && npm run copy-frontend",
     "build-backend": "cd backend/ && npm install && tsc --build",
     "build-frontend": "cd frontend && npm install && npm run build",
-    "copy-frontend": "cp -r frontend/build/ backend/build/dist",
+    "copy-frontend": "cp -r frontend/build/ backend/build/backend/src/dist",
     "posinstall": "cd backend/ && npm install",
-    "start": "cd backend && npm install && node build/app.js",
+    "start": "cd backend && npm install && node build/backend/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
