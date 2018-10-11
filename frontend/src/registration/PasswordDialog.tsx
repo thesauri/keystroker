@@ -35,7 +35,7 @@ const PasswordDialog = observer(() => (
                 Choose a password. The password should be at least 10 characters long and not in use anywhere else.
             </p>
             <p>
-                Note that the password will be stored in plain text and is part of the study.
+                <b>Note that the password will be stored in plain text and is part of the study.</b>
             </p>
             <div className="field">
                 <label className="label">
