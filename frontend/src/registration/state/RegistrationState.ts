@@ -12,7 +12,6 @@ import Email from './Email';
 import Password from './Password';
 import Pattern from './Pattern';
 import TOC from './TOC';
-import Test from './Test';
 
 class RegistrationState extends DialogState {
     constructor() {
@@ -28,13 +27,6 @@ class RegistrationState extends DialogState {
     }
 
     public participant(): Promise<Participant> {
-        // tslint:disable-next-line
-        console.log(Participant);
-        // tslint:disable-next-line
-        console.log(Test);
-        const test = new Test();
-        // tslint:disable-next-line
-        console.log(test);
         const participant = new Participant(Email.email, Password.password, Pattern.pattern, TOC.ticked);
         return participant.validate();
     }

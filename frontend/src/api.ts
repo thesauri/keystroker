@@ -10,11 +10,21 @@ const postData = (url: string, data: object): Promise<Success> => {
         method: "POST",
     };
     return fetch(url, params)
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            } else {
+                return Promise.reject("Unable to create account. Please let me know so that I can investigate the issue.");
+            }
+        })
         .then(json => {
             if (json.error === undefined) {
-                const result: Success = json;
-                return Promise.resolve(result);
+                try {
+                    const result: Success = json;
+                    return Promise.resolve(result);
+                } catch (error) {
+                    return Promise.reject("Unable to create account. Please let me know so that I can investigate the issue.");
+                }
             } else {
                 return Promise.reject(json.error);
             }
