@@ -10,9 +10,10 @@ exports.fromJson = function (jsonObject) {
     }
 };
 var Login = /** @class */ (function () {
-    function Login(email, password) {
+    function Login(email, password, pattern) {
         this.email = email;
         this.password = password;
+        this.pattern = pattern;
     }
     return Login;
 }());
