@@ -1,9 +1,11 @@
 import express = require("express");
 import { createParticipant } from "./model/Participant";
+import { fromJson as loginFromJson } from "../../common/Login";
 import { fromJson as participantFromJson } from "../../common/Participant";
 import Success from "../../common/Success";
+import { attemptLogin } from "./model/LoginAttempt";
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 // Serve static content
@@ -12,6 +14,21 @@ app.use(express.json());
 app.use("/", express.static(__dirname + "/dist/index.html"));
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
+
+app.post("/login", (req, res) => {
+    loginFromJson(req.body)
+        .then(attemptLogin)
+        .then(result => {
+            const body: Success = { message: result };
+            res.json(body);
+        })
+        .catch(reason => {
+            console.log(`Failed login for user: ${reason}`);
+            res.status(400).json({
+                error: reason
+            });
+        })
+});
 
 app.post("/participant", (req, res) => {
     participantFromJson(req.body)

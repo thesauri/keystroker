@@ -1,5 +1,6 @@
 import Participant from "../../common/Participant";
 import Success from "../../common/Success";
+import Login from './common/Login';
 
 const postData = (url: string, data: object): Promise<Success> => {
     const params: RequestInit = {
@@ -33,5 +34,10 @@ const postData = (url: string, data: object): Promise<Success> => {
 
 export const createParticipant = (participant: Participant): Promise<string> =>
     postData("/participant", participant)
+        .then(success => success.message)
+        .catch(error => Promise.reject(error));
+
+export const attemptPasswordLogin = (login: Login): Promise<string> =>
+    postData("/participant", login)
         .then(success => success.message)
         .catch(error => Promise.reject(error));
