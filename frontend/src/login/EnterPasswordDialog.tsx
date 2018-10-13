@@ -1,12 +1,24 @@
 import * as React from "react";
-import LoginState from "./state/LoginState";
 import Dialog from '../Dialog';
+import PasswordLoginAttempt from "./state/PasswordLoginAttempt";
+import Email from './state/Email';
+import Password from './state/Password';
+import { observer } from 'mobx-react';
 
-const EnterPasswordDialog = () => (
+const onEmailUpdate = (event: React.FormEvent<HTMLInputElement>) => {
+    Email.update(event.currentTarget.value);
+};
+
+const onPasswordUpdate = (event: React.FormEvent<HTMLInputElement>) => {
+    Password.update(event.currentTarget.value);
+};
+
+const EnterPasswordDialog = observer(() => (
     <Dialog
         title="Login"
+        notification={PasswordLoginAttempt.notification}
         next={{
-            onClick: LoginState.next,
+            onClick: PasswordLoginAttempt.login,
             text: "Login"
         }}>
         <section className="section">
@@ -18,7 +30,8 @@ const EnterPasswordDialog = () => (
                     <input
                         className="input"
                         type="email"
-                        defaultValue="walter.berggren@aalto.fi" />
+                        value={Email.email}
+                        onChange={onEmailUpdate} />
                 </div>
             </div>
             <div className="field">
@@ -29,11 +42,13 @@ const EnterPasswordDialog = () => (
                     <input
                         className="input"
                         type="password"
-                        autoFocus={true} />
+                        autoFocus={true}
+                        value={Password.password}
+                        onChange={onPasswordUpdate} />
                 </div>
             </div>
         </section>
     </Dialog>
-);
+));
 
 export default EnterPasswordDialog;

@@ -15,7 +15,13 @@ const postData = (url: string, data: object): Promise<Success> => {
             if (response.ok) {
                 return response.json()
             } else {
-                return Promise.reject("Unable to create account. Please let me know so that I can investigate the issue.");
+                return response.json().then((error) => {
+                    if (error.error) {
+                        return Promise.reject(error.error)
+                    } else {
+                        return Promise.reject("Unable to process the request. Please let me know so that I can investigate the issue.");
+                    }
+                });
             }
         })
         .then(json => {
@@ -24,7 +30,7 @@ const postData = (url: string, data: object): Promise<Success> => {
                     const result: Success = json;
                     return Promise.resolve(result);
                 } catch (error) {
-                    return Promise.reject("Unable to create account. Please let me know so that I can investigate the issue.");
+                    return Promise.reject("Unable to process the request. Please let me know so that I can investigate the issue.");
                 }
             } else {
                 return Promise.reject(json.error);
@@ -38,6 +44,6 @@ export const createParticipant = (participant: Participant): Promise<string> =>
         .catch(error => Promise.reject(error));
 
 export const attemptPasswordLogin = (login: Login): Promise<string> =>
-    postData("/participant", login)
+    postData("/login", login)
         .then(success => success.message)
         .catch(error => Promise.reject(error));
