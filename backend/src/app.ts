@@ -1,4 +1,5 @@
 import express = require("express");
+import * as schedule from "node-schedule";
 import { sendLinkToAllParticipants } from "./email";
 import { createParticipant } from "./model/Participant";
 import { fromJson as loginFromJson } from "../../common/Login";
@@ -9,7 +10,11 @@ import { attemptPasswordLogin, attemptPatternLogin } from "./model/LoginAttempt"
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-sendLinkToAllParticipants();
+// 9, 13, 17, 20 -> 6, 10, 14, 17
+schedule.scheduleJob("0 6 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 10 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 14 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 17 * * *", sendLinkToAllParticipants);
 
 // Serve static content
 app.use(express.static(__dirname + "/dist"));
