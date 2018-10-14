@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var email_1 = require("./email");
 var Participant_1 = require("./model/Participant");
 var Login_1 = require("../../common/Login");
 var Participant_2 = require("../../common/Participant");
 var LoginAttempt_1 = require("./model/LoginAttempt");
 var PORT = process.env.PORT || 4000;
 var app = express();
+email_1.sendLink("walter.berggren@gmail.com");
 // Serve static content
 app.use(express.static(__dirname + "/dist"));
 app.use(express.json());
