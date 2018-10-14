@@ -16,16 +16,30 @@ const onPasswordUpdate = (event: React.FormEvent<HTMLInputElement>) => {
 
 @observer
 class EnterPasswordDialog extends React.Component {
+    private emailField: React.RefObject<HTMLInputElement>;
     private passwordField: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {
         super(props);
+        this.emailField = React.createRef();
         this.passwordField = React.createRef();
     }
 
     public componentDidMount() {
         if (this.passwordField.current) {
             this.passwordField.current.addEventListener("keydown", this.logKeystroke);
+        }
+
+        const email = this.emailFromURLParameters();
+        if (email) {
+            Email.update(email);
+            if (this.passwordField.current) {
+                this.passwordField.current.focus();
+            }
+        } else {
+            if (this.emailField.current) {
+                this.emailField.current.focus();
+            }
         }
     }
 
@@ -55,9 +69,11 @@ class EnterPasswordDialog extends React.Component {
                         <div className="control">
                             <input
                                 className="input"
+                                ref={this.emailField}
                                 type="email"
                                 value={Email.email}
-                                onChange={onEmailUpdate} />
+                                onChange={onEmailUpdate}
+                            />
                         </div>
                     </div>
                     <div className="field">
@@ -69,7 +85,6 @@ class EnterPasswordDialog extends React.Component {
                                 className="input"
                                 type="password"
                                 ref={this.passwordField}
-                                autoFocus={true}
                                 value={Password.password}
                                 onChange={onPasswordUpdate} />
                         </div>
@@ -77,6 +92,11 @@ class EnterPasswordDialog extends React.Component {
                 </section>
             </Dialog>
         );
+    }
+
+    private emailFromURLParameters(): string | null {
+        const url = new URL(window.location.href);
+        return url.searchParams.get("email");
     }
 
     private logKeystroke(event: KeyboardEvent) {
