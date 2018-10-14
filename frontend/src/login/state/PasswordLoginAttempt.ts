@@ -1,16 +1,21 @@
-import { action, observable } from 'mobx';
+import { action, observable, toJS } from 'mobx';
 import { attemptPasswordLogin } from '../../api';
 import Login from '../../common/Login';
 import Email from './Email';
 import Password from './Password';
 import LoginState from './LoginState';
 
+
 class PasswordLoginAttempt {
     @observable public notification?: string;
 
     @action.bound
     public login() {
-        const login: Login = new Login(Email.email, Password.password, "");
+        const login: Login = new Login(Email.email, Password.password, Password.keystrokeEvents);
+        // tslint:disable-next-line
+        console.log(login);
+        // tslint:disable-next-line
+        console.log(toJS(Password.keystrokeEvents));
         attemptPasswordLogin(login)
             .then(() => LoginState.next())
             .catch(this.setNotification);

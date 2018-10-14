@@ -2,7 +2,7 @@ import { action, computed, observable } from "mobx";
 
 export default class DialogState {
     @observable public selectedDialogIndex: number;
-    public dialogs: Array<() => JSX.Element>;
+    public dialogs: Array<() => JSX.Element>
 
     @computed
     get CurrentDialog(): () => JSX.Element {
