@@ -9,11 +9,11 @@ var Participant_2 = require("../../common/Participant");
 var LoginAttempt_1 = require("./model/LoginAttempt");
 var PORT = process.env.PORT || 4000;
 var app = express();
-// 9, 13, 17, 20 -> 6, 10, 14, 17
-schedule.scheduleJob("0 6 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 10 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 14 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 17 * * *", email_1.sendLinkToAllParticipants);
+// 8, 11, 14, 18 -> 5, 8, 11, 15 
+schedule.scheduleJob("0 5 * * *", email_1.sendLinkToAllParticipants);
+schedule.scheduleJob("0 8 * * *", email_1.sendLinkToAllParticipants);
+schedule.scheduleJob("0 11 * * *", email_1.sendLinkToAllParticipants);
+schedule.scheduleJob("0 15 * * *", email_1.sendLinkToAllParticipants);
 // Serve static content
 app.use(express.static(__dirname + "/dist"));
 app.use(express.json());

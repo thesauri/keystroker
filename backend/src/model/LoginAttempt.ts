@@ -3,10 +3,17 @@ import { query } from "./db";
 import { QueryResult } from 'pg';
 
 export const attemptPasswordLogin = (login: Login): Promise<string> =>
-    verifyHasUnfinishedLogins(login.email)
+    verifyEmailExists(login.email)
+        .then(() => verifyHasUnfinishedLogins(login.email))
         .then(() => query("SELECT password FROM Participant WHERE email=$1;", [login.email]))
         .then(resolvePasswordForEmail)
         .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword));
+
+
+const verifyEmailExists = (email: string): Promise<boolean> => {
+    return query("SELECT email from Participant WHERE email=$1;", [email])
+        .then(queryResult => queryResult.rowCount > 0 ? Promise.resolve(true) : Promise.reject("Invalid email"))
+};
 
 const verifyHasUnfinishedLogins = (email: string): Promise<boolean> => {
     const expectedLogins = expectedLoginsByNow(email);
