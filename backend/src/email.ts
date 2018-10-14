@@ -1,5 +1,6 @@
 import nodemailer = require("nodemailer");
 import { MailOptions } from "nodemailer/lib/sendmail-transport";
+import { query } from "./model/db";
 
 const transporter = nodemailer.createTransport({
     host: "mail.aalto.fi",
@@ -45,9 +46,20 @@ export const sendLink = (email: string) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(`Unable to send email: ${error}`);
+            console.error(`Unable to send email to ${email}: ${error}`);
         }
-        console.log(`Email sent!`);
+        console.log(`Email sent to ${email}!`);
     });
 };
 
+export const sendLinkToAllParticipants = () => {
+    query("SELECT email FROM Participant;", [])
+        .then(queryResult => queryResult.rows.map(row => row.email as string))
+        .then(emails => emails.forEach(sendLinkAndRecordAsSent));
+};
+
+const sendLinkAndRecordAsSent = (email: string) => {
+    sendLink(email);
+    query("INSERT INTO EmailLinkEvent(participant_email) VALUES ($1);", [email])
+        .catch(error => console.error(`Unable to add EmailLinkEvent for ${email}`));
+}

@@ -1,5 +1,5 @@
 import express = require("express");
-import { sendLink } from "./email";
+import { sendLinkToAllParticipants } from "./email";
 import { createParticipant } from "./model/Participant";
 import { fromJson as loginFromJson } from "../../common/Login";
 import { fromJson as participantFromJson } from "../../common/Participant";
@@ -9,7 +9,7 @@ import { attemptPasswordLogin, attemptPatternLogin } from "./model/LoginAttempt"
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-sendLink("walter.berggren@gmail.com");
+sendLinkToAllParticipants();
 
 // Serve static content
 app.use(express.static(__dirname + "/dist"));

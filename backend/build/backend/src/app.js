@@ -8,7 +8,7 @@ var Participant_2 = require("../../common/Participant");
 var LoginAttempt_1 = require("./model/LoginAttempt");
 var PORT = process.env.PORT || 4000;
 var app = express();
-email_1.sendLink("walter.berggren@gmail.com");
+email_1.sendLinkToAllParticipants();
 // Serve static content
 app.use(express.static(__dirname + "/dist"));
 app.use(express.json());

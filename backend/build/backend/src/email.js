@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailer = require("nodemailer");
+var db_1 = require("./model/db");
 var transporter = nodemailer.createTransport({
     host: "mail.aalto.fi",
     port: 587,
@@ -37,9 +38,19 @@ exports.sendLink = function (email) {
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log("Unable to send email: " + error);
+            console.error("Unable to send email to " + email + ": " + error);
         }
-        console.log("Email sent!");
+        console.log("Email sent to " + email + "!");
     });
+};
+exports.sendLinkToAllParticipants = function () {
+    db_1.query("SELECT email FROM Participant;", [])
+        .then(function (queryResult) { return queryResult.rows.map(function (row) { return row.email; }); })
+        .then(function (emails) { return emails.forEach(sendLinkAndRecordAsSent); });
+};
+var sendLinkAndRecordAsSent = function (email) {
+    exports.sendLink(email);
+    db_1.query("INSERT INTO EmailLinkEvent(participant_email) VALUES ($1);", [email])
+        .catch(function (error) { return console.error("Unable to add EmailLinkEvent for " + email); });
 };
 //# sourceMappingURL=email.js.map
