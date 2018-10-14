@@ -4,6 +4,7 @@ import PasswordLoginAttempt from "./state/PasswordLoginAttempt";
 import Email from './state/Email';
 import Password from './state/Password';
 import { observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 
 const onEmailUpdate = (event: React.FormEvent<HTMLInputElement>) => {
     Email.update(event.currentTarget.value);
@@ -44,6 +45,9 @@ class EnterPasswordDialog extends React.Component {
                     text: "Login"
                 }}>
                 <section className="section">
+                    <p>
+                        This is the login page for the <Link to="/register">user authentication study</Link>. For this study, please type your login details by hand instead of automatically filling them in.
+                    </p>
                     <div className="field">
                         <label className="label">
                             Email
