@@ -5,3 +5,9 @@ CREATE TABLE LoginAttempt(
     success BOOLEAN,
     timestamp TIMESTAMP default current_timestamp
 );
+
+CREATE TABLE EmailLinkEvent(
+    id SERIAL NOT NULL,
+    participant_email TEXT REFERENCES Participant(email),
+    timestamp TIMESTAMP default current_timestamp
+);

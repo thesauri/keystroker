@@ -2,9 +2,46 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
 exports.attemptPasswordLogin = function (login) {
-    return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email])
+    return verifyHasUnfinishedLogins(login.email)
+        .then(function () { return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email]); })
         .then(resolvePasswordForEmail)
         .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); });
+};
+var verifyHasUnfinishedLogins = function (email) {
+    var expectedLogins = expectedLoginsByNow(email);
+    var completedLogins = exports.completedLoginCount(email);
+    return Promise.all([expectedLogins, completedLogins])
+        .then(function (logins) { return logins[0] - logins[1]; })
+        .then(function (remainingLogins) {
+        if (remainingLogins > 0) {
+            return Promise.resolve(true);
+        }
+        else {
+            return Promise.reject("You have already logged in enough for now, well done! But don't worry, you will soon be able to log in again 🙂");
+        }
+    });
+};
+exports.completedLoginCount = function (email) {
+    return db_1.query("SELECT COUNT(success) FROM LoginAttempt WHERE participant_email=$1 AND success='y';", [email])
+        .then(function (queryResult) {
+        if (queryResult.rowCount > 0) {
+            return Promise.resolve(queryResult.rows[0].count);
+        }
+        else {
+            return Promise.reject("Invalid email");
+        }
+    });
+};
+var expectedLoginsByNow = function (email) {
+    return db_1.query("SELECT COUNT(participant_email) FROM EmailLinkEvent WHERE participant_email=$1", [email])
+        .then(function (queryResult) {
+        if (queryResult.rowCount > 0) {
+            return Promise.resolve(queryResult.rows[0].count);
+        }
+        else {
+            return Promise.reject("Invalid email");
+        }
+    });
 };
 var resolvePasswordForEmail = function (queryResult) {
     if (queryResult.rowCount > 0) {
