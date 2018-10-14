@@ -10,11 +10,11 @@ import { attemptPasswordLogin, attemptPatternLogin } from "./model/LoginAttempt"
 const PORT = process.env.PORT || 4000;
 const app = express();
 
-// 9, 13, 17, 20 -> 6, 10, 14, 17
-schedule.scheduleJob("0 6 * * *", sendLinkToAllParticipants);
-schedule.scheduleJob("0 10 * * *", sendLinkToAllParticipants);
-schedule.scheduleJob("0 14 * * *", sendLinkToAllParticipants);
-schedule.scheduleJob("0 17 * * *", sendLinkToAllParticipants);
+// 8, 11, 14, 18 -> 5, 8, 11, 15 
+schedule.scheduleJob("0 5 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 8 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 11 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("0 15 * * *", sendLinkToAllParticipants);
 
 // Serve static content
 app.use(express.static(__dirname + "/dist"));
