@@ -10,10 +10,10 @@ exports.fromJson = function (jsonObject) {
     }
 };
 var Login = /** @class */ (function () {
-    function Login(email, password, pattern) {
+    function Login(email, password, keystrokeEvents) {
         this.email = email;
         this.password = password;
-        this.pattern = pattern;
+        this.keystrokeEvents = keystrokeEvents;
     }
     return Login;
 }());

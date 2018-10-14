@@ -3,21 +3,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
 exports.attemptPasswordLogin = function (login) {
     return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email])
-        .then(function (queryResult) {
-        if (queryResult.rowCount > 0) {
-            return Promise.resolve(queryResult.rows[0].password);
-        }
-        else {
-            return Promise.reject("Invalid email address");
-        }
-    })
-        .then(function (correctPassword) {
-        if (correctPassword === login.password) {
-            return Promise.resolve("Login successful!");
-        }
-        else {
-            return Promise.reject("Invalid password");
-        }
+        .then(resolvePasswordForEmail)
+        .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); });
+};
+var resolvePasswordForEmail = function (queryResult) {
+    if (queryResult.rowCount > 0) {
+        return Promise.resolve(queryResult.rows[0].password);
+    }
+    else {
+        return Promise.reject("Invalid email address");
+    }
+};
+var checkPasswordAndRecordAttempt = function (login, correctPassword) {
+    var success = login.password === correctPassword;
+    recordAttempt(login.email, JSON.stringify(login.keystrokeEvents), success);
+    if (success) {
+        return Promise.resolve("Login successful!");
+    }
+    else {
+        return Promise.reject("Invalid password");
+    }
+};
+var recordAttempt = function (email, keystrokeTiming, success) {
+    db_1.query("INSERT INTO LoginAttempt(participant_email, keystroke_timing, success) VALUES ($1, $2, $3);", [email, keystrokeTiming, success])
+        .catch(function (error) {
+        console.log("Error while storing login for user " + email + ": " + error);
     });
 };
 exports.attemptPatternLogin = function (email, pattern) {
