@@ -47,3 +47,8 @@ export const attemptPasswordLogin = (login: Login): Promise<string> =>
     postData("/login", login)
         .then(success => success.message)
         .catch(error => Promise.reject(error));
+
+export const attemptPatternLogin = (email: string, pattern: number[]): Promise<string> =>
+    postData("/pattern", { email, pattern })
+        .then(success => success.message)
+        .catch(error => Promise.reject(error));

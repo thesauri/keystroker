@@ -33,7 +33,7 @@ app.post("/login", (req, res) => {
 app.post("/pattern", (req, res) => {
     try {
         const email: string = req.body.email as string;
-        const pattern: number[] = JSON.parse(req.body.pattern) as number[];
+        const pattern: number[] = req.body.pattern as number[];
         attemptPatternLogin(email, pattern)    
             .then(result => {
                 const body: Success = { message: result };

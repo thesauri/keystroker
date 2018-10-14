@@ -30,7 +30,7 @@ app.post("/login", function (req, res) {
 app.post("/pattern", function (req, res) {
     try {
         var email = req.body.email;
-        var pattern = JSON.parse(req.body.pattern);
+        var pattern = req.body.pattern;
         LoginAttempt_1.attemptPatternLogin(email, pattern)
             .then(function (result) {
             var body = { message: result };

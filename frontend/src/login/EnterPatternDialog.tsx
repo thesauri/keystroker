@@ -1,17 +1,19 @@
 import * as React from "react";
-import LoginState from "./state/LoginState";
 import Dialog from '../Dialog';
 import PatternLock from '../PatternLock/PatternLock';
+import PatternLoginAttempt from './state/PatternLoginAttempt';
+import { observer } from 'mobx-react';
 
-const EnterPatternDialog = () => (
+const EnterPatternDialog = observer(() => (
     <Dialog
-        title="Enter pattern">
+        title="Enter pattern"
+        notification={PatternLoginAttempt.notification}>
         <PatternLock
             height={350}
             width={350}
-            onPatternEntered={LoginState.next}
+            onPatternEntered={PatternLoginAttempt.login}
             pointRadius={8} />
     </Dialog>
-);
+));
 
 export default EnterPatternDialog;
