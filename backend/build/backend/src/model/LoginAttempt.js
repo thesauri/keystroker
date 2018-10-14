@@ -9,7 +9,6 @@ exports.attemptPasswordLogin = function (login) {
         .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); });
 };
 var verifyEmailExists = function (email) {
-    console.log("booh");
     return db_1.query("SELECT email from Participant WHERE email=$1;", [email])
         .then(function (queryResult) { return queryResult.rowCount > 0 ? Promise.resolve(true) : Promise.reject("Invalid email"); });
 };
