@@ -1,6 +1,7 @@
 import * as React from "react";
 import Dialog from "../Dialog";
 import RegistrationState from "./state/RegistrationState";
+import { Link } from 'react-router-dom';
 
 const RegistrationDialog = () => (
     <Dialog
@@ -24,6 +25,9 @@ const RegistrationDialog = () => (
             </p>
             <p>
                 Questions? Contact Walter Berggren at <a href="mailto:walter.berggren@aalto.fi">walter.berggren@aalto.fi</a>, or by Telegram @thesauri.
+            </p>
+            <p>
+                Already registered? You can either log in by following the links sent by email or by <Link to="/login">visiting the login page</Link>.
             </p>
         </section>
     </Dialog>
