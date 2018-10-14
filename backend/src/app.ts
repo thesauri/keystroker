@@ -3,7 +3,7 @@ import { createParticipant } from "./model/Participant";
 import { fromJson as loginFromJson } from "../../common/Login";
 import { fromJson as participantFromJson } from "../../common/Participant";
 import Success from "../../common/Success";
-import { attemptLogin } from "./model/LoginAttempt";
+import { attemptPasswordLogin, attemptPatternLogin } from "./model/LoginAttempt";
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -17,7 +17,7 @@ app.use("/login", express.static(__dirname + "/dist/index.html"));
 
 app.post("/login", (req, res) => {
     loginFromJson(req.body)
-        .then(attemptLogin)
+        .then(attemptPasswordLogin)
         .then(result => {
             const body: Success = { message: result };
             res.json(body);
@@ -28,6 +28,28 @@ app.post("/login", (req, res) => {
                 error: reason
             });
         })
+});
+
+app.post("/pattern", (req, res) => {
+    try {
+        const email: string = req.body.email as string;
+        const pattern: number[] = JSON.parse(req.body.pattern) as number[];
+        attemptPatternLogin(email, pattern)    
+            .then(result => {
+                const body: Success = { message: result };
+                res.json(body);
+            })
+            .catch(reason => {
+                console.log(`Failed pattern login for user: ${reason}`);
+                res.status(400).json({
+                    error: reason
+                });
+            })
+    } catch (error) {
+        res.status(400).json({
+            error
+        });
+    }
 });
 
 app.post("/participant", (req, res) => {

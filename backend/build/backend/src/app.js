@@ -15,7 +15,7 @@ app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
 app.post("/login", function (req, res) {
     Login_1.fromJson(req.body)
-        .then(LoginAttempt_1.attemptLogin)
+        .then(LoginAttempt_1.attemptPasswordLogin)
         .then(function (result) {
         var body = { message: result };
         res.json(body);
@@ -26,6 +26,28 @@ app.post("/login", function (req, res) {
             error: reason
         });
     });
+});
+app.post("/pattern", function (req, res) {
+    try {
+        var email = req.body.email;
+        var pattern = JSON.parse(req.body.pattern);
+        LoginAttempt_1.attemptPatternLogin(email, pattern)
+            .then(function (result) {
+            var body = { message: result };
+            res.json(body);
+        })
+            .catch(function (reason) {
+            console.log("Failed pattern login for user: " + reason);
+            res.status(400).json({
+                error: reason
+            });
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            error: error
+        });
+    }
 });
 app.post("/participant", function (req, res) {
     Participant_2.fromJson(req.body)
