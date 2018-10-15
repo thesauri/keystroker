@@ -1,16 +1,9 @@
 import { observable, action } from "mobx";
 
 interface KeyboardProperties {
-    altKey: boolean;
-    code: string;
-    ctrlKey: boolean;
+    held: boolean;
     key: string;
-    keyCode: number;
-    metaKey: boolean;
-    repeat: boolean;
-    returnValue: boolean;
-    shiftKey: boolean;
-    timeStamp: number;
+    keyCode?: number;
 }
 
 export interface KeystrokeEvent {
@@ -28,28 +21,13 @@ class Password {
     }
 
     @action.bound
-    public addKeystrokeEvent(keyboardEvent: KeyboardEvent) {
+    public addKeystrokeEvent(key: string, keyCode: number | undefined, held: boolean) {
         const time = new Date().getTime();
-        const keyboardEventProperties = this.extractKeyboardEventProperties(keyboardEvent);
+        const keyboardEventProperties: KeyboardProperties = { held, key, keyCode };
         this.keystrokeEvents.push({
             keyboardEvent: keyboardEventProperties,
             time
         });
-    }
-
-    private extractKeyboardEventProperties(keyboardEvent: KeyboardEvent): KeyboardProperties {
-        return {
-            altKey: keyboardEvent.altKey,
-            code: keyboardEvent.code,
-            ctrlKey: keyboardEvent.ctrlKey,
-            key: keyboardEvent.key,
-            keyCode: keyboardEvent.keyCode,
-            metaKey: keyboardEvent.metaKey,
-            repeat: keyboardEvent.repeat,
-            returnValue: keyboardEvent.returnValue,
-            shiftKey: keyboardEvent.shiftKey,
-            timeStamp: keyboardEvent.timeStamp,
-        };
     }
 }
 

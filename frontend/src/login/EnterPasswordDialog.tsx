@@ -23,11 +23,15 @@ class EnterPasswordDialog extends React.Component {
         super(props);
         this.emailField = React.createRef();
         this.passwordField = React.createRef();
+        this.logKeystrokeDown = this.logKeystrokeDown.bind(this);
+        this.logKeystrokeUp = this.logKeystrokeUp.bind(this);
+        this.logKeystroke = this.logKeystroke.bind(this);
     }
 
     public componentDidMount() {
         if (this.passwordField.current) {
-            this.passwordField.current.addEventListener("keydown", this.logKeystroke);
+            this.passwordField.current.addEventListener("input", this.logKeystrokeDown);
+            this.passwordField.current.addEventListener("keyup", this.logKeystrokeUp);
         }
 
         const email = this.emailFromURLParameters();
@@ -45,7 +49,8 @@ class EnterPasswordDialog extends React.Component {
 
     public componentWillUnmount() {
         if (this.passwordField.current) {
-            this.passwordField.current.removeEventListener("keydown", this.logKeystroke);
+            this.passwordField.current.removeEventListener("input", this.logKeystrokeDown);
+            this.passwordField.current.removeEventListener("keyup", this.logKeystrokeUp);
         }
     }
 
@@ -99,8 +104,16 @@ class EnterPasswordDialog extends React.Component {
         return url.searchParams.get("email");
     }
 
-    private logKeystroke(event: KeyboardEvent) {
-        Password.addKeystrokeEvent(event);
+    private logKeystrokeDown(event: TextEvent) {
+        this.logKeystroke(event.data, undefined, true);
+    }
+
+    private logKeystrokeUp(event: KeyboardEvent) {
+        this.logKeystroke(event.key, event.keyCode, false);
+    }
+
+    private logKeystroke(key: string, keyCode: number | undefined, held: boolean, ) {
+        Password.addKeystrokeEvent(key, keyCode, held);
     }
 }
 export default () => <EnterPasswordDialog />;
