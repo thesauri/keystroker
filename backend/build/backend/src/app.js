@@ -11,7 +11,7 @@ var PORT = process.env.PORT || 4000;
 var app = express();
 // 8, 11, 14, 18 -> 5, 8, 11, 15 
 schedule.scheduleJob("0 5 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 8 * * *", email_1.sendLinkToAllParticipants);
+schedule.scheduleJob("10 8 * * *", email_1.sendLinkToAllParticipants);
 schedule.scheduleJob("0 11 * * *", email_1.sendLinkToAllParticipants);
 schedule.scheduleJob("0 15 * * *", email_1.sendLinkToAllParticipants);
 // Serve static content

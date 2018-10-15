@@ -12,7 +12,7 @@ const app = express();
 
 // 8, 11, 14, 18 -> 5, 8, 11, 15 
 schedule.scheduleJob("0 5 * * *", sendLinkToAllParticipants);
-schedule.scheduleJob("0 8 * * *", sendLinkToAllParticipants);
+schedule.scheduleJob("10 8 * * *", sendLinkToAllParticipants);
 schedule.scheduleJob("0 11 * * *", sendLinkToAllParticipants);
 schedule.scheduleJob("0 15 * * *", sendLinkToAllParticipants);
 
