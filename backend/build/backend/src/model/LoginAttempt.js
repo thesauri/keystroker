@@ -3,32 +3,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
 exports.attemptPasswordLogin = function (login) {
     return verifyEmailExists(login.email)
-        .then(function () { return verifyHasUnfinishedLogins(login.email); })
-        .then(function () { return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email]); })
-        .then(resolvePasswordForEmail)
-        .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); })
-        .then(function (message) {
-        return Promise.all([exports.completedLoginCount(login.email), exports.expectedLoginsByNow(), exports.totalLogins()])
-            .then(function (result) { return ({
-            completedLoginCount: result[0],
-            expectedLoginsByNow: result[1],
-            message: message,
-            totalLogins: result[2]
-        }); });
+        .then(function () { return verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email); })
+        .then(function (completedLoginCount) {
+        var completedAfterThis = completedLoginCount + 1;
+        console.log(completedLoginCount);
+        console.log(completedAfterThis);
+        return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email])
+            .then(resolvePasswordForEmail)
+            .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); })
+            .then(function (message) {
+            return Promise.all([exports.expectedLoginsByNow(), exports.totalLogins()])
+                .then(function (result) { return ({
+                completedLoginCount: completedAfterThis,
+                expectedLoginsByNow: result[0],
+                message: message,
+                totalLogins: result[1]
+            }); });
+        });
     });
 };
 var verifyEmailExists = function (email) {
     return db_1.query("SELECT email from Participant WHERE email=$1;", [email])
         .then(function (queryResult) { return queryResult.rowCount > 0 ? Promise.resolve(true) : Promise.reject("Invalid email"); });
 };
-var verifyHasUnfinishedLogins = function (email) {
+var verifyHasUnfinishedLoginsAndGetCompletedLogins = function (email) {
     var expectedLogins = exports.expectedLoginsByNow();
     var completedLogins = exports.completedLoginCount(email);
     return Promise.all([expectedLogins, completedLogins])
         .then(function (logins) { return logins[0] - logins[1]; })
         .then(function (remainingLogins) {
         if (remainingLogins > 0) {
-            return Promise.resolve(true);
+            return Promise.resolve(completedLogins);
         }
         else {
             return Promise.reject("You have already logged in enough for now, well done! But don't worry, you will soon be able to log in again 🙂");
@@ -39,7 +44,7 @@ exports.completedLoginCount = function (email) {
     return db_1.query("SELECT COUNT(success) FROM LoginAttempt WHERE participant_email=$1 AND success='y';", [email])
         .then(function (queryResult) {
         if (queryResult.rowCount > 0) {
-            return Promise.resolve(queryResult.rows[0].count);
+            return Promise.resolve(parseInt(queryResult.rows[0].count));
         }
         else {
             return Promise.reject("Invalid email");
@@ -62,9 +67,9 @@ exports.expectedLoginsByNow = function () {
         hour >= 5 && hour < 8 ? 1 :
             hour >= 8 && hour < 11 ? 2 :
                 hour >= 11 && hour < 15 ? 3 : 4;
-    return Promise.resolve(4 * (dateToday.getDate() - 15) + attemptsToday);
+    return Promise.resolve(4 * (dateToday.getDate() - 15) + attemptsToday + 1);
 };
-exports.totalLogins = function () { return Promise.resolve(56); };
+exports.totalLogins = function () { return Promise.resolve(57); };
 var resolvePasswordForEmail = function (queryResult) {
     if (queryResult.rowCount > 0) {
         return Promise.resolve(queryResult.rows[0].password);

@@ -4,19 +4,24 @@ import { QueryResult } from 'pg';
 
 export const attemptPasswordLogin = (login: Login): Promise<object> =>
     verifyEmailExists(login.email)
-        .then(() => verifyHasUnfinishedLogins(login.email))
-        .then(() => query("SELECT password FROM Participant WHERE email=$1;", [login.email]))
-        .then(resolvePasswordForEmail)
-        .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword))
-        .then(message => 
-            Promise.all([completedLoginCount(login.email), expectedLoginsByNow(), totalLogins()])
-                .then(result => ({
-                    completedLoginCount: result[0],
-                    expectedLoginsByNow: result[1],
-                    message,
-                    totalLogins: result[2]
-                }))
-        );
+        .then(() => verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email))
+        .then(completedLoginCount => {
+            const completedAfterThis = completedLoginCount + 1;
+            console.log(completedLoginCount);
+            console.log(completedAfterThis);
+            return query("SELECT password FROM Participant WHERE email=$1;", [login.email])
+                .then(resolvePasswordForEmail)
+                .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword))
+                .then(message => 
+                    Promise.all([expectedLoginsByNow(), totalLogins()])
+                        .then(result => ({
+                            completedLoginCount: completedAfterThis,
+                            expectedLoginsByNow: result[0],
+                            message,
+                            totalLogins: result[1]
+                        }))
+                );
+        });
 
 
 const verifyEmailExists = (email: string): Promise<boolean> => {
@@ -24,14 +29,14 @@ const verifyEmailExists = (email: string): Promise<boolean> => {
         .then(queryResult => queryResult.rowCount > 0 ? Promise.resolve(true) : Promise.reject("Invalid email"))
 };
 
-const verifyHasUnfinishedLogins = (email: string): Promise<boolean> => {
+const verifyHasUnfinishedLoginsAndGetCompletedLogins = (email: string): Promise<number> => {
     const expectedLogins = expectedLoginsByNow();
     const completedLogins = completedLoginCount(email);
     return Promise.all([expectedLogins, completedLogins])
         .then(logins => logins[0] - logins[1])
         .then(remainingLogins => {
             if (remainingLogins > 0) {
-                return Promise.resolve(true);
+                return Promise.resolve(completedLogins);
             } else {
                 return Promise.reject("You have already logged in enough for now, well done! But don't worry, you will soon be able to log in again 🙂");
             }
@@ -42,7 +47,7 @@ export const completedLoginCount = (email: string): Promise<number> =>
     query("SELECT COUNT(success) FROM LoginAttempt WHERE participant_email=$1 AND success='y';", [email])
         .then(queryResult => {
             if (queryResult.rowCount > 0) {
-                return Promise.resolve(queryResult.rows[0].count as number);
+                return Promise.resolve(parseInt(queryResult.rows[0].count));
             } else {
                 return Promise.reject("Invalid email");
             }

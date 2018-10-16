@@ -43,9 +43,8 @@ export const createParticipant = (participant: Participant): Promise<string> =>
         .then(success => success.message)
         .catch(error => Promise.reject(error));
 
-export const attemptPasswordLogin = (login: Login): Promise<string> =>
+export const attemptPasswordLogin = (login: Login): Promise<object> =>
     postData("/login", login)
-        .then(success => success.message)
         .catch(error => Promise.reject(error));
 
 export const attemptPatternLogin = (email: string, pattern: number[]): Promise<string> =>

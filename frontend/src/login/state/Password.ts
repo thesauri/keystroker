@@ -29,6 +29,11 @@ class Password {
             time
         });
     }
+
+    @action.bound
+    public reset() {
+        this.password = "";
+    }
 }
 
 export default new Password();
