@@ -34,7 +34,7 @@ class EnterPasswordDialog extends React.Component {
             this.passwordField.current.addEventListener("keyup", this.logKeystrokeUp);
         }
 
-        const email = this.emailFromURLParameters();
+        const email = this.emailFromURLParameters() || Email.email;
         if (email) {
             Email.update(email);
             if (this.passwordField.current) {
