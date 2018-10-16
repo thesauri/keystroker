@@ -6,14 +6,23 @@ exports.attemptPasswordLogin = function (login) {
         .then(function () { return verifyHasUnfinishedLogins(login.email); })
         .then(function () { return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email]); })
         .then(resolvePasswordForEmail)
-        .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); });
+        .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); })
+        .then(function (message) {
+        return Promise.all([exports.completedLoginCount(login.email), exports.expectedLoginsByNow(), exports.totalLogins()])
+            .then(function (result) { return ({
+            completedLoginCount: result[0],
+            expectedLoginsByNow: result[1],
+            message: message,
+            totalLogins: result[2]
+        }); });
+    });
 };
 var verifyEmailExists = function (email) {
     return db_1.query("SELECT email from Participant WHERE email=$1;", [email])
         .then(function (queryResult) { return queryResult.rowCount > 0 ? Promise.resolve(true) : Promise.reject("Invalid email"); });
 };
 var verifyHasUnfinishedLogins = function (email) {
-    var expectedLogins = expectedLoginsByNow(email);
+    var expectedLogins = exports.expectedLoginsByNow();
     var completedLogins = exports.completedLoginCount(email);
     return Promise.all([expectedLogins, completedLogins])
         .then(function (logins) { return logins[0] - logins[1]; })
@@ -37,17 +46,25 @@ exports.completedLoginCount = function (email) {
         }
     });
 };
-var expectedLoginsByNow = function (email) {
-    return db_1.query("SELECT COUNT(participant_email) FROM EmailLinkEvent WHERE participant_email=$1", [email])
-        .then(function (queryResult) {
-        if (queryResult.rowCount > 0) {
-            return Promise.resolve(queryResult.rows[0].count);
-        }
-        else {
-            return Promise.reject("Invalid email");
-        }
-    });
+exports.expectedLoginsByNow = function () {
+    // query("SELECT COUNT(participant_email) FROM EmailLinkEvent WHERE participant_email=$1", [email])
+    //     .then(queryResult => {
+    //         if (queryResult.rowCount > 0) {
+    //             return Promise.resolve(queryResult.rows[0].count as number);
+    //         } else {
+    //             return Promise.reject("Invalid email");
+    //         }
+    //     });
+    // 8, 11, 14, 18 -> 5, 8, 11, 15 
+    var dateToday = new Date(Date.now());
+    var hour = dateToday.getHours();
+    var attemptsToday = hour < 5 ? 0 :
+        hour >= 5 && hour < 8 ? 1 :
+            hour >= 8 && hour < 11 ? 2 :
+                hour >= 11 && hour < 15 ? 3 : 4;
+    return Promise.resolve(4 * (dateToday.getDate() - 15) + attemptsToday);
 };
+exports.totalLogins = function () { return Promise.resolve(56); };
 var resolvePasswordForEmail = function (queryResult) {
     if (queryResult.rowCount > 0) {
         return Promise.resolve(queryResult.rows[0].password);

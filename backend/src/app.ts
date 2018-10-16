@@ -27,7 +27,7 @@ app.post("/login", (req, res) => {
     loginFromJson(req.body)
         .then(attemptPasswordLogin)
         .then(result => {
-            const body: Success = { message: result };
+            const body = { message: result };
             res.json(body);
         })
         .catch(reason => {
