@@ -7,8 +7,6 @@ export const attemptPasswordLogin = (login: Login): Promise<object> =>
         .then(() => verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email))
         .then(completedLoginCount => {
             const completedAfterThis = completedLoginCount + 1;
-            console.log(completedLoginCount);
-            console.log(completedAfterThis);
             return query("SELECT password FROM Participant WHERE email=$1;", [login.email])
                 .then(resolvePasswordForEmail)
                 .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword))
