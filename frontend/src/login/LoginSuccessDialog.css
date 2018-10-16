@@ -1,0 +1,12 @@
+.LoginSuccessDialog-thank-you {
+    margin-bottom: 1.5rem;    
+}
+
+.LoginSuccessDialog-progress-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress::-webkit-progress-value {
+    transition: width 1s ease;
+}

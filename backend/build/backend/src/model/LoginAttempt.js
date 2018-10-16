@@ -6,8 +6,6 @@ exports.attemptPasswordLogin = function (login) {
         .then(function () { return verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email); })
         .then(function (completedLoginCount) {
         var completedAfterThis = completedLoginCount + 1;
-        console.log(completedLoginCount);
-        console.log(completedAfterThis);
         return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email])
             .then(resolvePasswordForEmail)
             .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); })
