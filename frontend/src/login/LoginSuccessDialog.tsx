@@ -32,7 +32,7 @@ class LoginSuccessDialog extends React.Component<any, State> {
             (
                 <div className="LoginSuccessDialog-thank-you">
                     <p>
-                        Thank you for logging! You still have {loginsRemaining} uncompleted logins, would you like to login again now?
+                        Thank you for logging in! You still have {loginsRemaining} uncompleted logins, would you like to login again now?
                     </p>
                     <button
                         className="button is-primary"
