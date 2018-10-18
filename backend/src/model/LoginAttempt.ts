@@ -2,14 +2,14 @@ import Login from "../../../common/Login";
 import { query } from "./db";
 import { QueryResult } from 'pg';
 
-export const attemptPasswordLogin = (login: Login): Promise<object> =>
+export const attemptPasswordLogin = (login: Login, userAgent: string): Promise<object> =>
     verifyEmailExists(login.email)
         .then(() => verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email))
         .then(completedLoginCount => {
             const completedAfterThis = completedLoginCount + 1;
             return query("SELECT password FROM Participant WHERE email=$1;", [login.email])
                 .then(resolvePasswordForEmail)
-                .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword))
+                .then(correctPassword => checkPasswordAndRecordAttempt(login, correctPassword, userAgent))
                 .then(message => 
                     Promise.all([expectedLoginsByNow(), totalLogins()])
                         .then(result => ({
@@ -80,9 +80,9 @@ const resolvePasswordForEmail = (queryResult: QueryResult) => {
     }
 };
 
-const checkPasswordAndRecordAttempt = (login: Login, correctPassword: string) => {
+const checkPasswordAndRecordAttempt = (login: Login, correctPassword: string, userAgent: string) => {
     const success = login.password === correctPassword;
-    recordAttempt(login.email, JSON.stringify(login.keystrokeEvents), success);
+    recordAttempt(login.email, JSON.stringify(login.keystrokeEvents), success, userAgent);
     if (success) {
         return Promise.resolve("Login successful!");
     } else {
@@ -90,9 +90,9 @@ const checkPasswordAndRecordAttempt = (login: Login, correctPassword: string) =>
     }
 };
 
-const recordAttempt = (email: string, keystrokeTiming: string, success: boolean) => {
-    query("INSERT INTO LoginAttempt(participant_email, keystroke_timing, success) VALUES ($1, $2, $3);",
-        [email, keystrokeTiming, success])
+const recordAttempt = (email: string, keystrokeTiming: string, success: boolean, userAgent: string) => {
+    query("INSERT INTO LoginAttempt(participant_email, keystroke_timing, success, user_agent) VALUES ($1, $2, $3, $4);",
+        [email, keystrokeTiming, success, userAgent])
         .catch(error => {
             console.log(`Error while storing login for user ${email}: ${error}`);
         });

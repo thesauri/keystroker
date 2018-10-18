@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var schedule = require("node-schedule");
+var useragent = require("express-useragent");
 var email_1 = require("./email");
 var Participant_1 = require("./model/Participant");
 var Login_1 = require("../../common/Login");
@@ -15,14 +16,16 @@ schedule.scheduleJob("10 8 * * *", email_1.sendLinkToAllParticipants);
 schedule.scheduleJob("0 11 * * *", email_1.sendLinkToAllParticipants);
 schedule.scheduleJob("0 15 * * *", email_1.sendLinkToAllParticipants);
 // Serve static content
+app.use(useragent.express());
 app.use(express.static(__dirname + "/dist"));
 app.use(express.json());
 app.use("/", express.static(__dirname + "/dist/index.html"));
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
 app.post("/login", function (req, res) {
+    var userAgent = req.useragent ? req.useragent.source : "";
     Login_1.fromJson(req.body)
-        .then(LoginAttempt_1.attemptPasswordLogin)
+        .then(function (login) { return LoginAttempt_1.attemptPasswordLogin(login, userAgent); })
         .then(function (result) {
         var body = { message: result };
         res.json(body);

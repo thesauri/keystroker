@@ -1,5 +1,6 @@
 import express = require("express");
 import * as schedule from "node-schedule";
+import * as useragent from "express-useragent";
 import { sendLinkToAllParticipants } from "./email";
 import { createParticipant } from "./model/Participant";
 import { fromJson as loginFromJson } from "../../common/Login";
@@ -17,6 +18,7 @@ schedule.scheduleJob("0 11 * * *", sendLinkToAllParticipants);
 schedule.scheduleJob("0 15 * * *", sendLinkToAllParticipants);
 
 // Serve static content
+app.use(useragent.express());
 app.use(express.static(__dirname + "/dist"));
 app.use(express.json());
 app.use("/", express.static(__dirname + "/dist/index.html"));
@@ -24,8 +26,9 @@ app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
 
 app.post("/login", (req, res) => {
+    const userAgent = req.useragent ? req.useragent.source : "";
     loginFromJson(req.body)
-        .then(attemptPasswordLogin)
+        .then(login => attemptPasswordLogin(login, userAgent))
         .then(result => {
             const body = { message: result };
             res.json(body);

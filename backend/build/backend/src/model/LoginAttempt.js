@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = require("./db");
-exports.attemptPasswordLogin = function (login) {
+exports.attemptPasswordLogin = function (login, userAgent) {
     return verifyEmailExists(login.email)
         .then(function () { return verifyHasUnfinishedLoginsAndGetCompletedLogins(login.email); })
         .then(function (completedLoginCount) {
         var completedAfterThis = completedLoginCount + 1;
         return db_1.query("SELECT password FROM Participant WHERE email=$1;", [login.email])
             .then(resolvePasswordForEmail)
-            .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword); })
+            .then(function (correctPassword) { return checkPasswordAndRecordAttempt(login, correctPassword, userAgent); })
             .then(function (message) {
             return Promise.all([exports.expectedLoginsByNow(), exports.totalLogins()])
                 .then(function (result) { return ({
@@ -76,9 +76,9 @@ var resolvePasswordForEmail = function (queryResult) {
         return Promise.reject("Invalid email address");
     }
 };
-var checkPasswordAndRecordAttempt = function (login, correctPassword) {
+var checkPasswordAndRecordAttempt = function (login, correctPassword, userAgent) {
     var success = login.password === correctPassword;
-    recordAttempt(login.email, JSON.stringify(login.keystrokeEvents), success);
+    recordAttempt(login.email, JSON.stringify(login.keystrokeEvents), success, userAgent);
     if (success) {
         return Promise.resolve("Login successful!");
     }
@@ -86,8 +86,8 @@ var checkPasswordAndRecordAttempt = function (login, correctPassword) {
         return Promise.reject("Invalid password");
     }
 };
-var recordAttempt = function (email, keystrokeTiming, success) {
-    db_1.query("INSERT INTO LoginAttempt(participant_email, keystroke_timing, success) VALUES ($1, $2, $3);", [email, keystrokeTiming, success])
+var recordAttempt = function (email, keystrokeTiming, success, userAgent) {
+    db_1.query("INSERT INTO LoginAttempt(participant_email, keystroke_timing, success, user_agent) VALUES ($1, $2, $3, $4);", [email, keystrokeTiming, success, userAgent])
         .catch(function (error) {
         console.log("Error while storing login for user " + email + ": " + error);
     });
