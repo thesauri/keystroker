@@ -11,6 +11,7 @@ class PasswordLoginAttempt {
 
     @action.bound
     public login() {
+        this.notification = "";
         const login: Login = new Login(Email.email, Password.password, Password.keystrokeEvents);
         attemptPasswordLogin(login)
             .then(this.setLoginSuccessResult)
