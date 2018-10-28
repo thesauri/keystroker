@@ -65,7 +65,8 @@ exports.expectedLoginsByNow = function () {
         hour >= 5 && hour < 8 ? 1 :
             hour >= 8 && hour < 11 ? 2 :
                 hour >= 11 && hour < 15 ? 3 : 4;
-    return Promise.resolve(4 * (dateToday.getDate() - 15) + attemptsToday + 1);
+    var expectedLoginCount = Math.min(4 * (dateToday.getDate() - 15) + attemptsToday + 1, 57);
+    return Promise.resolve(expectedLoginCount);
 };
 exports.totalLogins = function () { return Promise.resolve(57); };
 var resolvePasswordForEmail = function (queryResult) {
