@@ -1,20 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
-var schedule = require("node-schedule");
 var useragent = require("express-useragent");
-var email_1 = require("./email");
 var Participant_1 = require("./model/Participant");
 var Login_1 = require("../../common/Login");
 var Participant_2 = require("../../common/Participant");
 var LoginAttempt_1 = require("./model/LoginAttempt");
 var PORT = process.env.PORT || 4000;
 var app = express();
-// 8, 11, 14, 18 -> 5, 8, 11, 15 
-schedule.scheduleJob("0 5 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("10 8 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 11 * * *", email_1.sendLinkToAllParticipants);
-schedule.scheduleJob("0 15 * * *", email_1.sendLinkToAllParticipants);
 // Serve static content
 app.use(useragent.express());
 app.use(express.static(__dirname + "/dist"));
