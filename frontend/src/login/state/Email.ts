@@ -1,6 +1,6 @@
 import { observable, action } from "mobx";
 
-class Email {
+export class Email {
     @observable public email: string = "";
 
     @action.bound

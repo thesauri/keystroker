@@ -11,7 +11,7 @@ export interface KeystrokeEvent {
     time: number;
 }
 
-class Password {
+export class Password {
     @observable public password: string = "";
     @observable public keystrokeEvents: KeystrokeEvent[] = [];
 
