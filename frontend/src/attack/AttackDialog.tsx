@@ -4,6 +4,11 @@ import { observer } from 'mobx-react';
 import AttackPassword from './state/AttackPassword';
 import AttackEmail from './state/AttackEmail';
 import AttackAttempt from './state/AttackAttempt';
+import AttackAttacker from './state/AttackAttacker';
+
+const onAttackerUpdate = (event: React.FormEvent<HTMLInputElement>) => {
+    AttackAttacker.update(event.currentTarget.value);
+}
 
 const onEmailUpdate = (event: React.FormEvent<HTMLInputElement>) => {
     AttackEmail.update(event.currentTarget.value);
@@ -15,11 +20,14 @@ const onPasswordUpdate = (event: React.FormEvent<HTMLInputElement>) => {
 
 @observer
 class AttackDialog extends React.Component {
+    private attackerField: React.RefObject<HTMLInputElement>;
     private emailField: React.RefObject<HTMLInputElement>;
     private passwordField: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {
         super(props);
+    
+        this.attackerField = React.createRef();
         this.emailField = React.createRef();
         this.passwordField = React.createRef();
         this.logKeystrokeDown = this.logKeystrokeDown.bind(this);
@@ -34,7 +42,11 @@ class AttackDialog extends React.Component {
         }
 
         const email = this.emailFromURLParameters() || AttackEmail.email;
-        if (email) {
+        if (AttackAttacker.attacker === "") {
+            if (this.attackerField.current) {
+                this.attackerField.current.focus();
+            }
+        } else if (email) {
             AttackEmail.update(email);
             if (this.passwordField.current) {
                 this.passwordField.current.focus();
@@ -63,6 +75,21 @@ class AttackDialog extends React.Component {
                     text: "Login"
                 }}>
                 <section className="section">
+                    <div className="field">
+                        <label className="label">
+                            Attacker
+                        </label>
+                        <div className="control">
+                            <input
+                                className="input"
+                                ref={this.attackerField}
+                                type="text"
+                                autoComplete="off"
+                                value={AttackAttacker.attacker}
+                                onChange={onAttackerUpdate}
+                            />
+                        </div>
+                    </div>
                     <div className="field">
                         <label className="label">
                             Email
