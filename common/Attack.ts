@@ -11,9 +11,10 @@ export default class Attack {
     public attacker: string;
     public email: string;
     public password: string;
-    public keystrokeEvents: object;
+    public keystrokeEvents: string;
+    
 
-    constructor(attacker: string, email: string, password: string, keystrokeEvents: object) {
+    constructor(attacker: string, email: string, password: string, keystrokeEvents: string) {
         this.email = email;
         this.password = password;
         this.keystrokeEvents = keystrokeEvents;

@@ -93,13 +93,14 @@ class AttackDialog extends React.Component {
                     </div>
                     <div className="field">
                         <label className="label">
-                            Email
+                            ID
                         </label>
                         <div className="control">
                             <input
                                 className="input"
                                 ref={this.emailField}
-                                type="email"
+                                type="text"
+                                autoComplete="off"
                                 value={AttackEmail.email}
                                 onChange={onEmailUpdate}
                             />

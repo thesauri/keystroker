@@ -3,13 +3,14 @@ import { query } from "./db";
 import Success from '../../../common/Success';
 
 export const attemptAttack = (attack: Attack, userAgent: string): Promise<Success> => {
-    return resolvePassword(attack.email)
+    const id = parseInt(attack.email);
+    return resolvePassword(id)
         .then(password => recordAttackAttempt(attack, userAgent, password))
         .then(message => ({ message }));
 }
 
-const resolvePassword = (email: string): Promise<string> => {
-    return query("SELECT password FROM Participant WHERE email=$1;", [email])
+const resolvePassword = (id: number): Promise<string> => {
+    return query("SELECT password FROM Participant WHERE id=$1;", [id])
         .then(queryResult => {
             if (queryResult.rowCount > 0) {
                 return Promise.resolve(<string> queryResult.rows[0].password);
@@ -24,7 +25,7 @@ const recordAttackAttempt = (attack: Attack, userAgent: string, password: string
 
     console.log(`Attack attempt at ${attack.email} by ${attack.attacker}`);
 
-    return query("INSERT INTO AttackAttempt(participant_email, keystroke_timing, attacker, success, user_agent) VALUES ($1, $2, $3, $4, $5);",
+    return query("INSERT INTO AttackAttempt(id, keystroke_timing, attacker, success, user_agent) VALUES ($1, $2, $3, $4, $5);",
         [attack.email, attack.keystrokeEvents, attack.attacker, passwordCorrect, userAgent])
         .then(queryResult => {
             if (passwordCorrect) {

@@ -43,7 +43,7 @@ export const createParticipant = (participant: Participant): Promise<string> =>
         .then(success => success.message)
         .catch(error => Promise.reject(error));
 
-export const attemptAttack = (attacker: string, email: string, password: string, keystrokeEvents: object): Promise<string> =>
+export const attemptAttack = (attacker: string, email: string, password: string, keystrokeEvents: string): Promise<string> =>
     postData("/attack", { attacker, email, password, keystrokeEvents })
         .then(success => success.message)
         .catch(error => Promise.reject(error));

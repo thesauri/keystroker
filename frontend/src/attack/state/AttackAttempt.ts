@@ -14,12 +14,14 @@ class AttackAttempt {
             this.notification = "Attacker cannot be empty";
             return;
         } else if (AttackEmail.email === "") {
-            this.notification = "Email cannot be empty";
+            this.notification = "ID cannot be empty";
             return;
         }
 
-
-        attemptAttack(AttackAttacker.attacker, AttackEmail.email, AttackPassword.password, AttackPassword.keystrokeEvents)
+        const keystrokeEvents = JSON.stringify(AttackPassword.keystrokeEvents);
+        // tslint:disable-next-line
+        console.log(keystrokeEvents);
+        attemptAttack(AttackAttacker.attacker, AttackEmail.email, AttackPassword.password, keystrokeEvents)
             .then(this.successNotification)
             .catch(error => {
                 if (typeof error === "string") {
