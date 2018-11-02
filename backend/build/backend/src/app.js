@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var useragent = require("express-useragent");
 var Participant_1 = require("./model/Participant");
+var Attack_1 = require("../../common/Attack");
 var Login_1 = require("../../common/Login");
 var Participant_2 = require("../../common/Participant");
+var AttackAttempt_1 = require("./model/AttackAttempt");
 var LoginAttempt_1 = require("./model/LoginAttempt");
 var PORT = process.env.PORT || 4000;
 var app = express();
@@ -15,6 +17,17 @@ app.use(express.json());
 app.use("/", express.static(__dirname + "/dist/index.html"));
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
+app.post("/attack", function (req, res) {
+    var userAgent = req.useragent ? req.useragent.source : "";
+    Attack_1.fromJson(req.body)
+        .then(function (attack) { return AttackAttempt_1.attemptAttack(attack, userAgent); })
+        .then(function (result) { return res.json(result); })
+        .catch(function (reason) {
+        res.status(400).json({
+            error: reason
+        });
+    });
+});
 app.post("/login", function (req, res) {
     var userAgent = req.useragent ? req.useragent.source : "";
     Login_1.fromJson(req.body)

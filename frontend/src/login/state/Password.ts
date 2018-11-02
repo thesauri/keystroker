@@ -33,6 +33,7 @@ export class Password {
     @action.bound
     public reset() {
         this.password = "";
+        this.keystrokeEvents = [];
     }
 }
 

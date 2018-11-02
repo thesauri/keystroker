@@ -1,9 +1,11 @@
 import express = require("express");
 import * as useragent from "express-useragent";
 import { createParticipant } from "./model/Participant";
+import { fromJson as attackFromJson } from "../../common/Attack";
 import { fromJson as loginFromJson } from "../../common/Login";
 import { fromJson as participantFromJson } from "../../common/Participant";
 import Success from "../../common/Success";
+import { attemptAttack } from "./model/AttackAttempt";
 import { attemptPasswordLogin, attemptPatternLogin } from "./model/LoginAttempt";
 
 const PORT = process.env.PORT || 4000;
@@ -16,6 +18,18 @@ app.use(express.json());
 app.use("/", express.static(__dirname + "/dist/index.html"));
 app.use("/register", express.static(__dirname + "/dist/index.html"));
 app.use("/login", express.static(__dirname + "/dist/index.html"));
+
+app.post("/attack", (req, res) => {
+    const userAgent = req.useragent ? req.useragent.source : "";
+    attackFromJson(req.body)
+        .then(attack => attemptAttack(attack, userAgent))
+        .then(result => res.json(result))
+        .catch(reason => {
+            res.status(400).json({
+                error: reason
+            });
+        })
+});
 
 app.post("/login", (req, res) => {
     const userAgent = req.useragent ? req.useragent.source : "";

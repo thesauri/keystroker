@@ -70,6 +70,7 @@ class AttackDialog extends React.Component {
             <Dialog
                 title="Attack 😈"
                 notification={AttackAttempt.notification}
+                notificationSuccess={AttackAttempt.isSuccessNotification}
                 next={{
                     onClick: AttackAttempt.login,
                     text: "Login"

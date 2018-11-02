@@ -13,6 +13,7 @@ export interface Props {
     back?: ButtonProps;
     next?: ButtonProps;
     notification?: string;
+    notificationSuccess?: boolean;
 }
 
 class Dialog extends React.Component<Props, any> {
@@ -30,6 +31,7 @@ class Dialog extends React.Component<Props, any> {
     }
 
     public render() {
+        const notificationType = this.props.notificationSuccess === true ? "is-primary" : "is-danger";
         return (
             <div className="Dialog-root">
                 <section className="hero is-primary">
@@ -43,7 +45,7 @@ class Dialog extends React.Component<Props, any> {
                 </section>
                 <div className="container Dialog-content">
                     { this.props.notification &&
-                        <div className="Dialog-notification notification is-danger">
+                        <div className={`Dialog-notification notification ${notificationType}`}>
                             {this.props.notification}
                         </div>
                     }
