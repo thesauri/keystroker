@@ -3,10 +3,11 @@ Keystroker is the experimental setup for my (Walter Berggren) bachelor's thesis.
 
 The experimental setup allows users to register accounts with a self-chosen password and pattern (similar to password patterns on Android). The website then prompts the users to login regularly to the page by sending them emails. When logging in, keystrokes are registered using JavaScript.
 
+## Running
+The project is split into `frontend/` and `backend/`. For running the project, run `npm install` and `npm start` in the respective folders.
+
 ## Frontend
 The frontend is written in TypeScript with React. The frontend communicates with the backend through AJAX/REST calls.
-
-The frontend is located in the `frontend/` folder. 
 
 ## Backend
 The backend is written in TypeScript and uses PostgreSQL as its database.
