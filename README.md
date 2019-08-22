@@ -1,7 +1,13 @@
 # Keystroker
-Keystroker is the experimental setup for my (Walter Berggren) bachelor's thesis. The setup consists of a website for recording keystroke timing data of login attempts. The keystrioke timing data was then used for user verification using keystroke dynamics. The goal of the thesis (*Improving usability of password authentication using keystroke dynamics*) was to allow sparse character errors when typing passwords for users with otherwise typical typing behavior, and thereby improving the user experience.
+Typing passwords on smartphones is frustrating. A single type leads to a rejected login attempt. But what if you could do a typo when logging in to your account, but no one else?
 
-The experimental setup allows users to register accounts with a self-chosen password and pattern (similar to password patterns on Android). The website then prompts the users to login regularly to the page by sending them emails. When logging in, keystrokes are registered using JavaScript.
+In my bachelor's thesis, [*Improving usability of password authentication using keystroke dynamics*](https://www.dropbox.com/s/urdxhyhelewko4w/Improving%20usability%20of%20password%20authentication%20using%20keystroke%20dynamics%200004%20PDFA.pdf?dl=0), I attempted to use keystroke timing data as a second factor for recognizing users during a login attempt. The idea was to let users log in with typos if their typing behavior matched the typing behavior of their previous login attempts.
+
+`Keystroker` is the experimental setup for collecting keystroke timing data. It allows users to register accounts with a self-chosen password and pattern (similar to password patterns on Android). The website then prompts the users to login regularly to the page by sending them emails. When logging in, keystrokes are registered using JavaScript.
+
+Analysis of keystroke data and attempts to recognize users based on the timing data was done later using a separate set of Python scripts.
+
+The core findings of the thesis were presented as a lightning talk at SOUPS '19, Santa Clara (Symposium on Usable Privacy and Security).
 
 ## Running
 The project is split into `frontend/` and `backend/`. For running the project, run `npm install` and `npm start` in the respective folders.
@@ -10,6 +16,6 @@ The project is split into `frontend/` and `backend/`. For running the project, r
 The frontend is written in TypeScript with React. The frontend communicates with the backend through AJAX/REST calls.
 
 ## Backend
-The backend is written in TypeScript and uses PostgreSQL as its database.
+The backend is written in TypeScript and uses a PostgreSQL database.
 
 Original author: Walter Berggren (walter.berggren@aalto.fi)
